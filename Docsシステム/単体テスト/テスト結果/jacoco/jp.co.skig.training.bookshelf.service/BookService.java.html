@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">training-bookshelf</a> &gt; <a href="index.source.html" class="el_package">jp.co.skig.training.bookshelf.service</a> &gt; <span class="el_source">BookService.java</span></div><h1>BookService.java</h1><pre class="source lang-java linenums">package jp.co.skig.training.bookshelf.service;
+
+import java.util.List;
+import jp.co.skig.training.bookshelf.entity.Book;
+import jp.co.skig.training.bookshelf.mapper.BookMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * 書籍サービス
+ */
+@Service
+@RequiredArgsConstructor
+public class BookService {
+
+  private final BookMapper bookMapper;
+
+  /**
+   * 書籍一覧を取得する
+   * @param searchTitle タイトル検索条件
+   * @param searchAuthor 著者検索条件
+   * @param searchCategoryId カテゴリID検索条件
+   * @param sortColumn ソート列
+   * @param sortOrder ソート順
+   * @param page ページ番号（0始まり）
+   * @param pageSize 1ページあたりの件数
+   * @return 書籍一覧
+   */
+  public List&lt;Book&gt; findAll(String searchTitle, String searchAuthor,
+      Integer searchCategoryId, String sortColumn, String sortOrder,
+      int page, int pageSize) {
+<span class="fc" id="L33">    int offset = page * pageSize;</span>
+<span class="fc" id="L34">    return bookMapper.findAll(searchTitle, searchAuthor, searchCategoryId,</span>
+        sortColumn, sortOrder, pageSize, offset);
+  }
+
+  /**
+   * 検索条件に合致する書籍の件数を取得する
+   * @param searchTitle タイトル検索条件
+   * @param searchAuthor 著者検索条件
+   * @param searchCategoryId カテゴリID検索条件
+   * @return 件数
+   */
+  public int count(String searchTitle, String searchAuthor,
+      Integer searchCategoryId) {
+<span class="fc" id="L47">    return bookMapper.count(searchTitle, searchAuthor, searchCategoryId);</span>
+  }
+
+  /**
+   * 書籍を1件取得する
+   * @param bookId 書籍ID
+   * @return 書籍情報
+   */
+  public Book findById(Integer bookId) {
+<span class="fc" id="L56">    return bookMapper.findById(bookId);</span>
+  }
+
+  /**
+   * ISBNの重複チェック
+   * @param isbn ISBN
+   * @return 重複している場合true
+   */
+  public boolean isDuplicateIsbn(String isbn) {
+<span class="fc bfc" id="L65" title="All 2 branches covered.">    return bookMapper.findByIsbn(isbn) != null;</span>
+  }
+
+  /**
+   * ISBNの重複チェック（自身を除く）
+   * @param isbn ISBN
+   * @param bookId 除外する書籍ID
+   * @return 重複している場合true
+   */
+  public boolean isDuplicateIsbn(String isbn, Integer bookId) {
+<span class="fc" id="L75">    Book existing = bookMapper.findByIsbn(isbn);</span>
+<span class="fc bfc" id="L76" title="All 4 branches covered.">    return existing != null &amp;&amp; !existing.getBookId().equals(bookId);</span>
+  }
+
+  /**
+   * 書籍を登録する
+   * @param book 書籍情報
+   */
+  @Transactional
+  public void register(Book book) {
+<span class="fc" id="L85">    bookMapper.insert(book);</span>
+<span class="fc" id="L86">  }</span>
+
+  /**
+   * 書籍を更新する
+   * @param book 書籍情報
+   * @return 更新件数（楽観的ロックで0の場合は他ユーザーが更新済み）
+   */
+  @Transactional
+  public int update(Book book) {
+<span class="fc" id="L95">    return bookMapper.update(book);</span>
+  }
+
+  /**
+   * 書籍を削除する
+   * @param bookId 書籍ID
+   * @return 削除件数
+   */
+  @Transactional
+  public int delete(Integer bookId) {
+<span class="fc" id="L105">    return bookMapper.delete(bookId);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

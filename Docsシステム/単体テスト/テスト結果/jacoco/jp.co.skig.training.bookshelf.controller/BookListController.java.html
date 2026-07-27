@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookListController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">training-bookshelf</a> &gt; <a href="index.source.html" class="el_package">jp.co.skig.training.bookshelf.controller</a> &gt; <span class="el_source">BookListController.java</span></div><h1>BookListController.java</h1><pre class="source lang-java linenums">package jp.co.skig.training.bookshelf.controller;
+
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import jp.co.skig.training.bookshelf.constants.BookConstants;
+import jp.co.skig.training.bookshelf.constants.CommonConstants;
+import jp.co.skig.training.bookshelf.entity.Book;
+import jp.co.skig.training.bookshelf.service.BookService;
+import jp.co.skig.training.bookshelf.service.CategoryService;
+import jp.co.skig.training.bookshelf.util.MessageUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+/**
+ * 書籍一覧コントローラー（BK01）
+ */
+@Controller
+@RequiredArgsConstructor
+<span class="fc" id="L24">@Slf4j</span>
+public class BookListController {
+
+  private final BookService bookService;
+  private final CategoryService categoryService;
+
+  /**
+   * 書籍一覧を表示する（検索・ソート・ページングに対応）
+   */
+  @GetMapping(&quot;/book/list&quot;)
+  public String list(
+      @RequestParam(required = false) String searchTitle,
+      @RequestParam(required = false) String searchAuthor,
+      @RequestParam(required = false) Integer searchCategory,
+      @RequestParam(required = false) String sortColumn,
+      @RequestParam(required = false) String sortOrder,
+      @RequestParam(defaultValue = &quot;1&quot;) int page,
+      HttpSession session,
+      Model model) {
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">    boolean hasSearchParam = StringUtils.hasText(searchTitle)</span>
+<span class="fc bfc" id="L45" title="All 4 branches covered.">        || StringUtils.hasText(searchAuthor) || searchCategory != null;</span>
+
+    String title;
+    String author;
+    Integer categoryId;
+<span class="fc bfc" id="L50" title="All 2 branches covered.">    if (hasSearchParam) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">      title = StringUtils.hasText(searchTitle) ? searchTitle : null;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">      author = StringUtils.hasText(searchAuthor) ? searchAuthor : null;</span>
+<span class="fc" id="L53">      categoryId = searchCategory;</span>
+<span class="fc" id="L54">      session.setAttribute(BookConstants.SESSION_SEARCH_TITLE, title);</span>
+<span class="fc" id="L55">      session.setAttribute(BookConstants.SESSION_SEARCH_AUTHOR, author);</span>
+<span class="fc" id="L56">      session.setAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID, categoryId);</span>
+    } else {
+<span class="fc" id="L58">      title = (String) session.getAttribute(BookConstants.SESSION_SEARCH_TITLE);</span>
+<span class="fc" id="L59">      author = (String) session.getAttribute(BookConstants.SESSION_SEARCH_AUTHOR);</span>
+<span class="fc" id="L60">      categoryId = (Integer) session.getAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);</span>
+    }
+
+<span class="fc bfc" id="L63" title="All 2 branches covered.">    String col = StringUtils.hasText(sortColumn) ? sortColumn : CommonConstants.DEFAULT_SORT_COLUMN;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">    String order = StringUtils.hasText(sortOrder) ? sortOrder : CommonConstants.DEFAULT_SORT_ORDER;</span>
+
+<span class="fc" id="L66">    int pageSize = CommonConstants.PAGE_SIZE;</span>
+<span class="fc" id="L67">    int totalCount = bookService.count(title, author, categoryId);</span>
+<span class="fc" id="L68">    int totalPages = Math.max((int) Math.ceil((double) totalCount / pageSize), 1);</span>
+<span class="fc" id="L69">    int currentPage = Math.min(Math.max(page, 1), totalPages);</span>
+
+<span class="fc" id="L71">    List&lt;Book&gt; books = bookService.findAll(title, author, categoryId, col, order,</span>
+        currentPage - 1, pageSize);
+
+<span class="fc" id="L74">    model.addAttribute(&quot;books&quot;, books);</span>
+<span class="fc" id="L75">    model.addAttribute(&quot;categories&quot;, categoryService.findAll());</span>
+<span class="fc" id="L76">    model.addAttribute(&quot;searchTitle&quot;, title);</span>
+<span class="fc" id="L77">    model.addAttribute(&quot;searchAuthor&quot;, author);</span>
+<span class="fc" id="L78">    model.addAttribute(&quot;searchCategory&quot;, categoryId);</span>
+<span class="fc" id="L79">    model.addAttribute(&quot;sortColumn&quot;, col);</span>
+<span class="fc" id="L80">    model.addAttribute(&quot;sortOrder&quot;, order);</span>
+<span class="fc" id="L81">    model.addAttribute(&quot;currentPage&quot;, currentPage);</span>
+<span class="fc" id="L82">    model.addAttribute(&quot;totalPages&quot;, totalPages);</span>
+<span class="fc" id="L83">    model.addAttribute(&quot;totalCount&quot;, totalCount);</span>
+
+<span class="fc bfc" id="L85" title="All 2 branches covered.">    if (totalCount == 0) {</span>
+<span class="fc" id="L86">      model.addAttribute(&quot;noDataMessage&quot;, MessageUtil.getMessage(&quot;bk01.message.nodata&quot;));</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">    } else if (hasSearchParam) {</span>
+<span class="fc" id="L88">      model.addAttribute(&quot;searchResultMessage&quot;,</span>
+<span class="fc" id="L89">          MessageUtil.getMessage(&quot;bk01.message.searchresult&quot;, totalCount));</span>
+    }
+
+<span class="fc" id="L92">    return &quot;book/BK01_BookList&quot;;</span>
+  }
+
+  /**
+   * 検索条件をクリアして一覧にリダイレクトする
+   */
+  @GetMapping(&quot;/book/list/clear&quot;)
+  public String clearSearch(HttpSession session) {
+<span class="fc" id="L100">    session.removeAttribute(BookConstants.SESSION_SEARCH_TITLE);</span>
+<span class="fc" id="L101">    session.removeAttribute(BookConstants.SESSION_SEARCH_AUTHOR);</span>
+<span class="fc" id="L102">    session.removeAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);</span>
+<span class="fc" id="L103">    return &quot;redirect:/book/list&quot;;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
