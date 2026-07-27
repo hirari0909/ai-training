@@ -33,6 +33,7 @@ CREATE TABLE books (
     category_id INT NOT NULL,
     price INT NOT NULL,
     description TEXT,
+    is_recommended BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (isbn),

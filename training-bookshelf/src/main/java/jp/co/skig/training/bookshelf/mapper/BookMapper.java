@@ -45,7 +45,7 @@ public interface BookMapper {
    */
   @Select("""
       SELECT b.book_id, b.title, b.author, b.publisher, b.published_date,
-             b.isbn, b.category_id, b.price, b.description,
+             b.isbn, b.category_id, b.price, b.description, b.is_recommended AS recommended,
              b.created_at, b.updated_at, c.category_name
       FROM books b
       INNER JOIN categories c ON b.category_id = c.category_id
@@ -69,9 +69,9 @@ public interface BookMapper {
    */
   @Insert("""
       INSERT INTO books (title, author, publisher, published_date, isbn,
-                         category_id, price, description, created_at, updated_at)
+                         category_id, price, description, is_recommended, created_at, updated_at)
       VALUES (#{title}, #{author}, #{publisher}, #{publishedDate}, #{isbn},
-              #{categoryId}, #{price}, #{description}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+              #{categoryId}, #{price}, #{description}, #{recommended}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
       """)
   @Options(useGeneratedKeys = true, keyProperty = "bookId")
   void insert(Book book);
@@ -84,7 +84,8 @@ public interface BookMapper {
   @Update("""
       UPDATE books SET title = #{title}, author = #{author}, publisher = #{publisher},
              published_date = #{publishedDate}, isbn = #{isbn}, category_id = #{categoryId},
-             price = #{price}, description = #{description}, updated_at = CURRENT_TIMESTAMP
+             price = #{price}, description = #{description}, is_recommended = #{recommended},
+             updated_at = CURRENT_TIMESTAMP
       WHERE book_id = #{bookId} AND updated_at = #{updatedAt}
       """)
   int update(Book book);

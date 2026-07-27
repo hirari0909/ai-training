@@ -28,6 +28,8 @@
 | BK06-005 | 入力値正常で確認画面へ遷移 | 全項目正常値 | POST /book/edit/1/confirm | view: `book/BK07_BookEditConfirm` | セッションにフォーム保存 |
 | BK06-006 | バリデーションエラーで入力画面再表示 | isbn不正 | POST /book/edit/1/confirm | view: `book/BK06_BookEditInput` | model.errors にisbnエラー |
 | BK06-007 | updatedAt不正値はnullとなる | updatedAt="invalid" | POST /book/edit/1/confirm | パース失敗 | form.updatedAt=null |
+| BK06-012 | お勧めフラグON（チェックあり）で確認画面へ遷移 | recommended="on" | POST /book/edit/1/confirm | view: `book/BK07_BookEditConfirm` | form.recommended=true |
+| BK06-013 | お勧めフラグ未指定（チェックなし）で確認画面へ遷移 | recommendedパラメータなし | POST /book/edit/1/confirm | view: `book/BK07_BookEditConfirm` | form.recommended=false |
 
 ## 編集キャンセル - cancelEdit()
 | No | テストケース | 前提条件 | 入力 | 期待結果 | 確認項目 |
@@ -47,6 +49,7 @@
 | BK07-004 | 楽観ロック失敗（updateCount=0） | bookService.update が0を返す | POST /book/edit/1 | redirect:/book/detail/1 | flash.errorMessage="他のユーザーによって更新されています。最新のデータを取得してください。"、セッション削除 |
 | BK07-005 | 正常更新成功 | updateCount=1 | POST /book/edit/1 | redirect:/book/edit/complete?bookId=1 | セッションのフォーム削除 |
 | BK07-006 | DB例外発生時 | bookService.update が例外throw | POST /book/edit/1 | view: `book/BK07_BookEditConfirm` | model.errorMessage="データの更新に失敗しました" |
+| BK07-007 | お勧めフラグがBookエンティティへ反映される | form.recommended=true | POST /book/edit/1 | redirect:/book/edit/complete?bookId=1 | bookService.updateへ渡されるBook.recommended=true |
 
 ## 編集完了画面表示 - editComplete()
 | No | テストケース | 前提条件 | 入力 | 期待結果 | 確認項目 |

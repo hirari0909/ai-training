@@ -75,6 +75,7 @@ public class BookEditController {
       @RequestParam(required = false) String category,
       @RequestParam(required = false) String price,
       @RequestParam(required = false) String description,
+      @RequestParam(required = false) String recommended,
       @RequestParam String updatedAt,
       HttpSession session,
       Model model) {
@@ -89,6 +90,7 @@ public class BookEditController {
     form.setPublisher(publisher);
     form.setIsbn(isbn);
     form.setDescription(description);
+    form.setRecommended(recommended != null);
     form.setUpdatedAt(parseUpdatedAt(updatedAt));
     trySetPublishedDate(form, publishedDate);
     trySetCategoryId(form, category);
@@ -150,6 +152,7 @@ public class BookEditController {
       book.setCategoryId(form.getCategoryId());
       book.setPrice(form.getPrice());
       book.setDescription(form.getDescription());
+      book.setRecommended(form.getRecommended());
       book.setUpdatedAt(form.getUpdatedAt());
 
       int updateCount = bookService.update(book);
@@ -190,6 +193,7 @@ public class BookEditController {
     form.setCategoryId(book.getCategoryId());
     form.setPrice(book.getPrice());
     form.setDescription(book.getDescription());
+    form.setRecommended(book.getRecommended());
     form.setUpdatedAt(book.getUpdatedAt());
     return form;
   }

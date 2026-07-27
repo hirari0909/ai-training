@@ -204,6 +204,59 @@ class BookRegisterControllerTest {
   }
 
   @Test
+  void BK03_009_お勧めフラグONで確認画面へ遷移() throws Exception {
+    // Given
+    when(categoryService.findAll())
+        .thenReturn(List.of(createCategory(1, "小説・文学")));
+
+    // When
+    var result = mockMvc.perform(post("/book/create/confirm")
+            .param("title", "タイトル")
+            .param("author", "著者")
+            .param("publisher", "出版社")
+            .param("publishedDate", "2024-01-01")
+            .param("isbn", "1234567890")
+            .param("category", "1")
+            .param("price", "1500")
+            .param("description", "概要")
+            .param("recommended", "on"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("book/BK04_BookRegisterConfirm"))
+        .andReturn();
+
+    // Then: セッションにフォームが保存され、お勧めフラグがtrueとなっている
+    MockHttpSession session = (MockHttpSession) result.getRequest().getSession();
+    BookRegisterForm saved = (BookRegisterForm) session.getAttribute(BookConstants.SESSION_REGISTER_FORM);
+    assertThat(saved.getRecommended()).isTrue();
+  }
+
+  @Test
+  void BK03_010_お勧めフラグ未指定で確認画面へ遷移() throws Exception {
+    // Given
+    when(categoryService.findAll())
+        .thenReturn(List.of(createCategory(1, "小説・文学")));
+
+    // When: recommendedパラメータなし（チェックなし）
+    var result = mockMvc.perform(post("/book/create/confirm")
+            .param("title", "タイトル")
+            .param("author", "著者")
+            .param("publisher", "出版社")
+            .param("publishedDate", "2024-01-01")
+            .param("isbn", "1234567890")
+            .param("category", "1")
+            .param("price", "1500")
+            .param("description", "概要"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("book/BK04_BookRegisterConfirm"))
+        .andReturn();
+
+    // Then: お勧めフラグがfalseとなっている
+    MockHttpSession session = (MockHttpSession) result.getRequest().getSession();
+    BookRegisterForm saved = (BookRegisterForm) session.getAttribute(BookConstants.SESSION_REGISTER_FORM);
+    assertThat(saved.getRecommended()).isFalse();
+  }
+
+  @Test
   void BK04_001_セッション切れ() throws Exception {
     // Given: セッションにフォームなし
     // When & Then
@@ -265,6 +318,27 @@ class BookRegisterControllerTest {
         .andExpect(status().isOk())
         .andExpect(view().name("book/BK04_BookRegisterConfirm"))
         .andExpect(model().attribute("errorMessage", "データの登録に失敗しました"));
+  }
+
+  @Test
+  void BK04_005_お勧めフラグがBookエンティティへ反映される() throws Exception {
+    // Given
+    BookRegisterForm form = new BookRegisterForm();
+    form.setIsbn("1234567890");
+    form.setTitle("タイトル");
+    form.setRecommended(true);
+    MockHttpSession session = new MockHttpSession();
+    session.setAttribute(BookConstants.SESSION_REGISTER_FORM, form);
+    when(bookService.isDuplicateIsbn("1234567890")).thenReturn(false);
+
+    // When
+    mockMvc.perform(post("/book/create").session(session))
+        .andExpect(status().is3xxRedirection());
+
+    // Then: bookService.registerに渡されるBookのrecommendedがtrue
+    var captor = org.mockito.ArgumentCaptor.forClass(jp.co.skig.training.bookshelf.entity.Book.class);
+    verify(bookService, times(1)).register(captor.capture());
+    assertThat(captor.getValue().getRecommended()).isTrue();
   }
 
   @Test

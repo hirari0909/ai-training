@@ -20,6 +20,9 @@ public class BookEditForm implements Serializable {
   private Integer price;
   private String description;
 
+  /** お勧めフラグ */
+  private Boolean recommended;
+
   /** 楽観的ロック用の更新日時 */
   private LocalDateTime updatedAt;
 }

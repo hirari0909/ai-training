@@ -60,6 +60,7 @@ public class BookRegisterController {
       @RequestParam(required = false) String category,
       @RequestParam(required = false) String price,
       @RequestParam(required = false) String description,
+      @RequestParam(required = false) String recommended,
       HttpSession session,
       Model model) {
 
@@ -72,6 +73,7 @@ public class BookRegisterController {
     form.setPublisher(publisher);
     form.setIsbn(isbn);
     form.setDescription(description);
+    form.setRecommended(recommended != null);
     trySetPublishedDate(form, publishedDate);
     trySetCategoryId(form, category);
     trySetPrice(form, price);
@@ -130,6 +132,7 @@ public class BookRegisterController {
       book.setCategoryId(form.getCategoryId());
       book.setPrice(form.getPrice());
       book.setDescription(form.getDescription());
+      book.setRecommended(form.getRecommended());
       bookService.register(book);
 
       session.removeAttribute(BookConstants.SESSION_REGISTER_FORM);

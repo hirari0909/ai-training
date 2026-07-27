@@ -48,7 +48,7 @@ final class BookValidationSupport {
 
 <span class="fc bfc" id="L49" title="All 2 branches covered.">    if (!StringUtils.hasText(publishedDate)) {</span>
 <span class="fc" id="L50">      errors.put(&quot;publishedDate&quot;, MessageUtil.getMessage(&quot;validation.required&quot;, &quot;出版日&quot;));</span>
-    } else {
+<span class="fc" id="L51">    } else {</span>
       try {
 <span class="fc" id="L53">        LocalDate date = LocalDate.parse(publishedDate);</span>
 <span class="fc bfc" id="L54" title="All 2 branches covered.">        if (date.isAfter(LocalDate.now())) {</span>
@@ -56,7 +56,7 @@ final class BookValidationSupport {
         }
 <span class="fc" id="L57">      } catch (DateTimeParseException e) {</span>
 <span class="fc" id="L58">        errors.put(&quot;publishedDate&quot;, MessageUtil.getMessage(&quot;validation.date.format&quot;, &quot;出版日&quot;));</span>
-<span class="fc" id="L59">      }</span>
+      }
     }
 
 <span class="fc bfc" id="L62" title="All 2 branches covered.">    if (!StringUtils.hasText(isbn)) {</span>
@@ -71,7 +71,7 @@ final class BookValidationSupport {
 
 <span class="fc bfc" id="L72" title="All 2 branches covered.">    if (!StringUtils.hasText(price)) {</span>
 <span class="fc" id="L73">      errors.put(&quot;price&quot;, MessageUtil.getMessage(&quot;validation.required&quot;, &quot;価格&quot;));</span>
-    } else {
+<span class="fc" id="L74">    } else {</span>
       try {
 <span class="fc" id="L76">        int priceValue = Integer.parseInt(price);</span>
 <span class="fc bfc" id="L77" title="All 2 branches covered.">        if (priceValue &lt; 0) {</span>
@@ -79,7 +79,7 @@ final class BookValidationSupport {
         }
 <span class="fc" id="L80">      } catch (NumberFormatException e) {</span>
 <span class="fc" id="L81">        errors.put(&quot;price&quot;, MessageUtil.getMessage(&quot;validation.number.format&quot;, &quot;価格&quot;));</span>
-<span class="fc" id="L82">      }</span>
+      }
     }
 
 <span class="fc bfc" id="L85" title="All 4 branches covered.">    if (StringUtils.hasText(description) &amp;&amp; description.length() &gt; BookConstants.DESCRIPTION_MAX_LENGTH) {</span>

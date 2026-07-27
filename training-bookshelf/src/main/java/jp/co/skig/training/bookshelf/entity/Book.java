@@ -18,6 +18,10 @@ public class Book {
   private Integer categoryId;
   private Integer price;
   private String description;
+
+  /** お勧めフラグ（ONの場合、一覧画面でタイトル横に「おすすめ」バッジを表示） */
+  private Boolean recommended;
+
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 

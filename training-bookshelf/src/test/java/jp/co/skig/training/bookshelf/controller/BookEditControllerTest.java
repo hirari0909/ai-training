@@ -262,6 +262,57 @@ class BookEditControllerTest {
   }
 
   @Test
+  void BK06_012_お勧めフラグONで確認画面へ遷移() throws Exception {
+    // Given
+    when(categoryService.findAll()).thenReturn(List.of(createCategory(1, "小説・文学")));
+
+    // When
+    var result = mockMvc.perform(post("/book/edit/1/confirm")
+            .param("title", "タイトル")
+            .param("author", "著者")
+            .param("publisher", "出版社")
+            .param("publishedDate", "2024-01-01")
+            .param("isbn", "1234567890")
+            .param("category", "1")
+            .param("price", "1500")
+            .param("updatedAt", "2024-01-01T10:00:00")
+            .param("recommended", "on"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("book/BK07_BookEditConfirm"))
+        .andReturn();
+
+    // Then: セッションに保存されたフォームのお勧めフラグがtrue
+    MockHttpSession session = (MockHttpSession) result.getRequest().getSession();
+    BookEditForm saved = (BookEditForm) session.getAttribute(BookConstants.SESSION_EDIT_FORM);
+    assertThat(saved.getRecommended()).isTrue();
+  }
+
+  @Test
+  void BK06_013_お勧めフラグ未指定で確認画面へ遷移() throws Exception {
+    // Given
+    when(categoryService.findAll()).thenReturn(List.of(createCategory(1, "小説・文学")));
+
+    // When: recommendedパラメータなし（チェックなし）
+    var result = mockMvc.perform(post("/book/edit/1/confirm")
+            .param("title", "タイトル")
+            .param("author", "著者")
+            .param("publisher", "出版社")
+            .param("publishedDate", "2024-01-01")
+            .param("isbn", "1234567890")
+            .param("category", "1")
+            .param("price", "1500")
+            .param("updatedAt", "2024-01-01T10:00:00"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("book/BK07_BookEditConfirm"))
+        .andReturn();
+
+    // Then: お勧めフラグがfalse
+    MockHttpSession session = (MockHttpSession) result.getRequest().getSession();
+    BookEditForm saved = (BookEditForm) session.getAttribute(BookConstants.SESSION_EDIT_FORM);
+    assertThat(saved.getRecommended()).isFalse();
+  }
+
+  @Test
   void BK07_001_セッション切れ() throws Exception {
     // When & Then: セッションにフォームなし
     mockMvc.perform(post("/book/edit/1"))
@@ -361,6 +412,29 @@ class BookEditControllerTest {
         .andExpect(status().isOk())
         .andExpect(view().name("book/BK07_BookEditConfirm"))
         .andExpect(model().attribute("errorMessage", "データの更新に失敗しました"));
+  }
+
+  @Test
+  void BK07_007_お勧めフラグがBookエンティティへ反映される() throws Exception {
+    // Given
+    BookEditForm form = new BookEditForm();
+    form.setBookId(1);
+    form.setIsbn("1234567890");
+    form.setUpdatedAt(LocalDateTime.now());
+    form.setRecommended(true);
+    MockHttpSession session = new MockHttpSession();
+    session.setAttribute(BookConstants.SESSION_EDIT_FORM, form);
+    when(bookService.isDuplicateIsbn("1234567890", 1)).thenReturn(false);
+    when(bookService.update(any())).thenReturn(1);
+
+    // When
+    mockMvc.perform(post("/book/edit/1").session(session))
+        .andExpect(status().is3xxRedirection());
+
+    // Then: bookService.updateに渡されるBookのrecommendedがtrue
+    var captor = org.mockito.ArgumentCaptor.forClass(Book.class);
+    verify(bookService, times(1)).update(captor.capture());
+    assertThat(captor.getValue().getRecommended()).isTrue();
   }
 
   @Test

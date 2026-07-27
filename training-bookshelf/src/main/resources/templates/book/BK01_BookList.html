@@ -115,7 +115,7 @@
                 <tbody>
                     <tr th:each="book : ${books}">
                         <td th:text="${book.bookId}"></td>
-                        <td><a th:href="@{/book/detail/{id}(id=${book.bookId})}" class="book-title-link" th:text="${book.title}"></a></td>
+                        <td><a th:href="@{/book/detail/{id}(id=${book.bookId})}" class="book-title-link" th:text="${book.title}"></a><span class="badge bg-danger ms-1" th:if="${book.recommended}">おすすめ</span></td>
                         <td th:text="${book.author}"></td>
                         <td th:text="${book.categoryName}"></td>
                         <td th:text="${book.publishedDate}"></td>

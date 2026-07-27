@@ -21,8 +21,9 @@
 | 7 | category_id | カテゴリID | INT | - | - | NOT NULL | - | - | ○ | - | ○ | categories.category_id参照 |
 | 8 | price | 価格 | INT | - | - | NOT NULL | - | - | - | - | - | 単位:円 |
 | 9 | description | 概要 | TEXT | - | - | NULL | NULL | - | - | - | - | 最大65,535文字 |
-| 10 | created_at | 作成日時 | DATETIME | - | - | NOT NULL | CURRENT_TIMESTAMP | - | - | - | - | 登録時自動設定 |
-| 11 | updated_at | 更新日時 | DATETIME | - | - | NOT NULL | CURRENT_TIMESTAMP ON UPDATE | - | - | - | - | 更新時自動更新 |
+| 10 | is_recommended | お勧めフラグ | BOOLEAN | - | - | NOT NULL | FALSE | - | - | - | - | ON:true / OFF:false |
+| 11 | created_at | 作成日時 | DATETIME | - | - | NOT NULL | CURRENT_TIMESTAMP | - | - | - | - | 登録時自動設定 |
+| 12 | updated_at | 更新日時 | DATETIME | - | - | NOT NULL | CURRENT_TIMESTAMP ON UPDATE | - | - | - | - | 更新時自動更新 |
 
 ### インデックス定義
 
@@ -38,7 +39,7 @@
 ### 制約
 
 #### NOT NULL制約
-- book_id, title, author, publisher, published_date, isbn, category_id, price, created_at, updated_at
+- book_id, title, author, publisher, published_date, isbn, category_id, price, is_recommended, created_at, updated_at
 
 #### UNIQUE制約
 - isbn: 同じISBNの書籍は登録不可
@@ -56,10 +57,10 @@ FOREIGN KEY (category_id) REFERENCES categories(category_id)
 
 ```sql
 -- ※categoriesテーブル登録後に実行
-INSERT INTO books (title, author, publisher, published_date, isbn, category_id, price, description) VALUES
-('リーダブルコード', 'Dustin Boswell', 'オライリージャパン', '2012-06-23', '9784873115658', 3, 2640, 'より良いコードを書くためのシンプルで実践的なテクニック'),
-('人を動かす', 'デール・カーネギー', '創元社', '2016-01-26', '9784422100517', 2, 1650, '人間関係の古典として、あらゆる自己啓発本の原点となった不朽の名著'),
-('吾輩は猫である', '夏目漱石', '岩波書店', '1990-01-16', '9784003101018', 1, 1056, '猫の視点で人間社会を風刺した夏目漱石のデビュー作');
+INSERT INTO books (title, author, publisher, published_date, isbn, category_id, price, description, is_recommended) VALUES
+('リーダブルコード', 'Dustin Boswell', 'オライリージャパン', '2012-06-23', '9784873115658', 3, 2640, 'より良いコードを書くためのシンプルで実践的なテクニック', TRUE),
+('人を動かす', 'デール・カーネギー', '創元社', '2016-01-26', '9784422100517', 2, 1650, '人間関係の古典として、あらゆる自己啓発本の原点となった不朽の名著', FALSE),
+('吾輩は猫である', '夏目漱石', '岩波書店', '1990-01-16', '9784003101018', 1, 1056, '猫の視点で人間社会を風刺した夏目漱石のデビュー作', FALSE);
 ```
 
 ### テーブル作成SQL
@@ -75,6 +76,7 @@ CREATE TABLE books (
     category_id INT NOT NULL COMMENT 'カテゴリID',
     price INT NOT NULL COMMENT '価格',
     description TEXT NULL COMMENT '概要',
+    is_recommended BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'お勧めフラグ',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
     UNIQUE KEY idx_isbn (isbn),
@@ -291,6 +293,7 @@ CREATE TABLE books (
     category_id INT NOT NULL COMMENT 'カテゴリID',
     price INT NOT NULL COMMENT '価格',
     description TEXT NULL COMMENT '概要',
+    is_recommended BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'お勧めフラグ',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
     UNIQUE KEY idx_isbn (isbn),
@@ -337,17 +340,17 @@ INSERT INTO categories (category_id, category_name) VALUES
 (9, 'その他');
 
 -- 書籍データ投入（category_idで指定）
-INSERT INTO books (title, author, publisher, published_date, isbn, category_id, price, description) VALUES
-('リーダブルコード', 'Dustin Boswell', 'オライリージャパン', '2012-06-23', '9784873115658', 3, 2640, 'より良いコードを書くためのシンプルで実践的なテクニック'),
-('人を動かす', 'デール・カーネギー', '創元社', '2016-01-26', '9784422100517', 2, 1650, '人間関係の古典として、あらゆる自己啓発本の原点となった不朽の名著'),
-('吾輩は猫である', '夏目漱石', '岩波書店', '1990-01-16', '9784003101018', 1, 1056, '猫の視点で人間社会を風刺した夏目漱石のデビュー作'),
-('ゼロ秒思考', '赤羽雄二', 'ダイヤモンド社', '2013-12-20', '9784478022207', 2, 1540, 'A4メモ書きで思考力と行動力を高める'),
-('イシューからはじめよ', '安宅和人', '英治出版', '2010-11-24', '9784862760852', 2, 1980, '知的生産の「シンプルな本質」'),
-('プリンシプル オブ プログラミング', '上田勲', '秀和システム', '2016-03-23', '9784798046143', 3, 2420, '3年目までに身につけたい一生役立つ101の原理原則'),
-('達人プログラマー', 'David Thomas', 'オーム社', '2020-11-21', '9784274226298', 3, 3520, 'システム開発の職人から名匠への道'),
-('7つの習慣', 'スティーブン・R・コヴィー', 'キングベアー出版', '2013-08-30', '9784863940246', 2, 2420, '人格主義の回復'),
-('こころ', '夏目漱石', '岩波書店', '1991-01-16', '9784003101124', 1, 572, '人間の孤独とエゴイズムを描いた名作'),
-('ファクトフルネス', 'ハンス・ロスリング', '日経BP', '2019-01-11', '9784822289607', 4, 1980, 'データを基に世界を正しく見る習慣');
+INSERT INTO books (title, author, publisher, published_date, isbn, category_id, price, description, is_recommended) VALUES
+('リーダブルコード', 'Dustin Boswell', 'オライリージャパン', '2012-06-23', '9784873115658', 3, 2640, 'より良いコードを書くためのシンプルで実践的なテクニック', TRUE),
+('人を動かす', 'デール・カーネギー', '創元社', '2016-01-26', '9784422100517', 2, 1650, '人間関係の古典として、あらゆる自己啓発本の原点となった不朽の名著', FALSE),
+('吾輩は猫である', '夏目漱石', '岩波書店', '1990-01-16', '9784003101018', 1, 1056, '猫の視点で人間社会を風刺した夏目漱石のデビュー作', FALSE),
+('ゼロ秒思考', '赤羽雄二', 'ダイヤモンド社', '2013-12-20', '9784478022207', 2, 1540, 'A4メモ書きで思考力と行動力を高める', FALSE),
+('イシューからはじめよ', '安宅和人', '英治出版', '2010-11-24', '9784862760852', 2, 1980, '知的生産の「シンプルな本質」', TRUE),
+('プリンシプル オブ プログラミング', '上田勲', '秀和システム', '2016-03-23', '9784798046143', 3, 2420, '3年目までに身につけたい一生役立つ101の原理原則', FALSE),
+('達人プログラマー', 'David Thomas', 'オーム社', '2020-11-21', '9784274226298', 3, 3520, 'システム開発の職人から名匠への道', TRUE),
+('7つの習慣', 'スティーブン・R・コヴィー', 'キングベアー出版', '2013-08-30', '9784863940246', 2, 2420, '人格主義の回復', FALSE),
+('こころ', '夏目漱石', '岩波書店', '1991-01-16', '9784003101124', 1, 572, '人間の孤独とエゴイズムを描いた名作', FALSE),
+('ファクトフルネス', 'ハンス・ロスリング', '日経BP', '2019-01-11', '9784822289607', 4, 1980, 'データを基に世界を正しく見る習慣', FALSE);
 
 -- レビューデータ投入
 INSERT INTO reviews (book_id, reviewer_name, rating, comment, created_at) VALUES

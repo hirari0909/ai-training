@@ -54,7 +54,7 @@ public class BookListController {
 <span class="fc" id="L54">      session.setAttribute(BookConstants.SESSION_SEARCH_TITLE, title);</span>
 <span class="fc" id="L55">      session.setAttribute(BookConstants.SESSION_SEARCH_AUTHOR, author);</span>
 <span class="fc" id="L56">      session.setAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID, categoryId);</span>
-    } else {
+<span class="fc" id="L57">    } else {</span>
 <span class="fc" id="L58">      title = (String) session.getAttribute(BookConstants.SESSION_SEARCH_TITLE);</span>
 <span class="fc" id="L59">      author = (String) session.getAttribute(BookConstants.SESSION_SEARCH_AUTHOR);</span>
 <span class="fc" id="L60">      categoryId = (Integer) session.getAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);</span>
@@ -69,7 +69,7 @@ public class BookListController {
 <span class="fc" id="L69">    int currentPage = Math.min(Math.max(page, 1), totalPages);</span>
 
 <span class="fc" id="L71">    List&lt;Book&gt; books = bookService.findAll(title, author, categoryId, col, order,</span>
-        currentPage - 1, pageSize);
+<span class="fc" id="L72">        currentPage - 1, pageSize);</span>
 
 <span class="fc" id="L74">    model.addAttribute(&quot;books&quot;, books);</span>
 <span class="fc" id="L75">    model.addAttribute(&quot;categories&quot;, categoryService.findAll());</span>

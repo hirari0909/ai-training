@@ -30,6 +30,8 @@
 | BK03-005 | 出版日不正値は保存時にnullとなる | publishedDate="invalid" | POST /book/create/confirm | フォーム変換失敗 | form.publishedDate=null（エラー表示） |
 | BK03-006 | カテゴリ不正値は保存時にnullとなる | category="abc" | POST /book/create/confirm | フォーム変換失敗 | form.categoryId=null |
 | BK03-007 | 価格不正値は保存時にnullとなる | price="abc" | POST /book/create/confirm | フォーム変換失敗 | form.price=null |
+| BK03-009 | お勧めフラグON（チェックあり）で確認画面へ遷移 | recommended="on" | POST /book/create/confirm | view: `book/BK04_BookRegisterConfirm` | form.recommended=true |
+| BK03-010 | お勧めフラグ未指定（チェックなし）で確認画面へ遷移 | recommendedパラメータなし | POST /book/create/confirm | view: `book/BK04_BookRegisterConfirm` | form.recommended=false |
 
 ## 登録キャンセル - cancelRegister()
 | No | テストケース | 前提条件 | 入力 | 期待結果 | 確認項目 |
@@ -47,6 +49,7 @@
 | BK04-002 | ISBN重複エラー | isDuplicateIsbn=true | POST /book/create | view: `book/BK04_BookRegisterConfirm` | model.errorMessage="このISBNは既に登録されています" |
 | BK04-003 | 正常登録成功 | isDuplicateIsbn=false、登録成功 | POST /book/create | redirect:/book/create/complete?bookId=1 | セッションのフォーム削除、bookService.register呼び出し |
 | BK04-004 | DB例外発生時 | bookService.register が例外throw | POST /book/create | view: `book/BK04_BookRegisterConfirm` | model.errorMessage="データの登録に失敗しました" |
+| BK04-005 | お勧めフラグがBookエンティティへ反映される | form.recommended=true | POST /book/create | redirect:/book/create/complete | bookService.registerへ渡されるBook.recommended=true |
 
 ## 登録完了画面表示 - registerComplete()
 | No | テストケース | 前提条件 | 入力 | 期待結果 | 確認項目 |

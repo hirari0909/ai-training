@@ -17,4 +17,7 @@ public class BookRegisterForm implements Serializable {
   private Integer categoryId;
   private Integer price;
   private String description;
+
+  /** お勧めフラグ */
+  private Boolean recommended;
 }

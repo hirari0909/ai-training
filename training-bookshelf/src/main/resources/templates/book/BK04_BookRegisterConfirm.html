@@ -83,6 +83,12 @@
                 <div class="info-label">概要</div>
                 <div class="info-value" th:text="${form.description}"></div>
             </div>
+            <div class="row info-row">
+                <div class="col-md-6">
+                    <div class="info-label">お勧めフラグ</div>
+                    <div class="info-value" th:text="${form.recommended} ? 'する' : 'しない'"></div>
+                </div>
+            </div>
         </div>
 
         <div class="mb-4">

@@ -60,33 +60,35 @@ public class BookRegisterController {
       @RequestParam(required = false) String category,
       @RequestParam(required = false) String price,
       @RequestParam(required = false) String description,
+      @RequestParam(required = false) String recommended,
       HttpSession session,
       Model model) {
 
-<span class="fc" id="L66">    Map&lt;String, String&gt; errors = BookValidationSupport.validate(</span>
-        title, author, publisher, publishedDate, isbn, category, price, description);
+<span class="fc" id="L67">    Map&lt;String, String&gt; errors = BookValidationSupport.validate(</span>
+<span class="fc" id="L68">        title, author, publisher, publishedDate, isbn, category, price, description);</span>
 
-<span class="fc" id="L69">    BookRegisterForm form = new BookRegisterForm();</span>
-<span class="fc" id="L70">    form.setTitle(title);</span>
-<span class="fc" id="L71">    form.setAuthor(author);</span>
-<span class="fc" id="L72">    form.setPublisher(publisher);</span>
-<span class="fc" id="L73">    form.setIsbn(isbn);</span>
-<span class="fc" id="L74">    form.setDescription(description);</span>
-<span class="fc" id="L75">    trySetPublishedDate(form, publishedDate);</span>
-<span class="fc" id="L76">    trySetCategoryId(form, category);</span>
-<span class="fc" id="L77">    trySetPrice(form, price);</span>
+<span class="fc" id="L70">    BookRegisterForm form = new BookRegisterForm();</span>
+<span class="fc" id="L71">    form.setTitle(title);</span>
+<span class="fc" id="L72">    form.setAuthor(author);</span>
+<span class="fc" id="L73">    form.setPublisher(publisher);</span>
+<span class="fc" id="L74">    form.setIsbn(isbn);</span>
+<span class="fc" id="L75">    form.setDescription(description);</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">    form.setRecommended(recommended != null);</span>
+<span class="fc" id="L77">    trySetPublishedDate(form, publishedDate);</span>
+<span class="fc" id="L78">    trySetCategoryId(form, category);</span>
+<span class="fc" id="L79">    trySetPrice(form, price);</span>
 
-<span class="fc bfc" id="L79" title="All 2 branches covered.">    if (!errors.isEmpty()) {</span>
-<span class="fc" id="L80">      model.addAttribute(&quot;form&quot;, form);</span>
-<span class="fc" id="L81">      model.addAttribute(&quot;errors&quot;, errors);</span>
-<span class="fc" id="L82">      model.addAttribute(&quot;categories&quot;, categoryService.findAll());</span>
-<span class="fc" id="L83">      return &quot;book/BK03_BookRegisterInput&quot;;</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">    if (!errors.isEmpty()) {</span>
+<span class="fc" id="L82">      model.addAttribute(&quot;form&quot;, form);</span>
+<span class="fc" id="L83">      model.addAttribute(&quot;errors&quot;, errors);</span>
+<span class="fc" id="L84">      model.addAttribute(&quot;categories&quot;, categoryService.findAll());</span>
+<span class="fc" id="L85">      return &quot;book/BK03_BookRegisterInput&quot;;</span>
     }
 
-<span class="fc" id="L86">    session.setAttribute(BookConstants.SESSION_REGISTER_FORM, form);</span>
-<span class="fc" id="L87">    model.addAttribute(&quot;form&quot;, form);</span>
-<span class="fc" id="L88">    model.addAttribute(&quot;categoryName&quot;, resolveCategoryName(form.getCategoryId()));</span>
-<span class="fc" id="L89">    return &quot;book/BK04_BookRegisterConfirm&quot;;</span>
+<span class="fc" id="L88">    session.setAttribute(BookConstants.SESSION_REGISTER_FORM, form);</span>
+<span class="fc" id="L89">    model.addAttribute(&quot;form&quot;, form);</span>
+<span class="fc" id="L90">    model.addAttribute(&quot;categoryName&quot;, resolveCategoryName(form.getCategoryId()));</span>
+<span class="fc" id="L91">    return &quot;book/BK04_BookRegisterConfirm&quot;;</span>
   }
 
   /**
@@ -94,8 +96,8 @@ public class BookRegisterController {
    */
   @GetMapping(&quot;/book/create/cancel&quot;)
   public String cancelRegister(HttpSession session) {
-<span class="fc" id="L97">    session.removeAttribute(BookConstants.SESSION_REGISTER_FORM);</span>
-<span class="fc" id="L98">    return &quot;redirect:/book/list&quot;;</span>
+<span class="fc" id="L99">    session.removeAttribute(BookConstants.SESSION_REGISTER_FORM);</span>
+<span class="fc" id="L100">    return &quot;redirect:/book/list&quot;;</span>
   }
 
   // ========================================
@@ -107,39 +109,40 @@ public class BookRegisterController {
    */
   @PostMapping(&quot;/book/create&quot;)
   public String register(HttpSession session, RedirectAttributes redirectAttributes, Model model) {
-<span class="fc" id="L110">    BookRegisterForm form = (BookRegisterForm) session.getAttribute(BookConstants.SESSION_REGISTER_FORM);</span>
-<span class="fc bfc" id="L111" title="All 2 branches covered.">    if (form == null) {</span>
-<span class="fc" id="L112">      redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;, MessageUtil.getMessage(&quot;common.session.timeout&quot;));</span>
-<span class="fc" id="L113">      return &quot;redirect:/book/create&quot;;</span>
+<span class="fc" id="L112">    BookRegisterForm form = (BookRegisterForm) session.getAttribute(BookConstants.SESSION_REGISTER_FORM);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">    if (form == null) {</span>
+<span class="fc" id="L114">      redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;, MessageUtil.getMessage(&quot;common.session.timeout&quot;));</span>
+<span class="fc" id="L115">      return &quot;redirect:/book/create&quot;;</span>
     }
 
     try {
-<span class="fc bfc" id="L117" title="All 2 branches covered.">      if (bookService.isDuplicateIsbn(form.getIsbn())) {</span>
-<span class="fc" id="L118">        model.addAttribute(&quot;form&quot;, form);</span>
-<span class="fc" id="L119">        model.addAttribute(&quot;categoryName&quot;, resolveCategoryName(form.getCategoryId()));</span>
-<span class="fc" id="L120">        model.addAttribute(&quot;errorMessage&quot;, MessageUtil.getMessage(&quot;validation.duplicate.isbn&quot;));</span>
-<span class="fc" id="L121">        return &quot;book/BK04_BookRegisterConfirm&quot;;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">      if (bookService.isDuplicateIsbn(form.getIsbn())) {</span>
+<span class="fc" id="L120">        model.addAttribute(&quot;form&quot;, form);</span>
+<span class="fc" id="L121">        model.addAttribute(&quot;categoryName&quot;, resolveCategoryName(form.getCategoryId()));</span>
+<span class="fc" id="L122">        model.addAttribute(&quot;errorMessage&quot;, MessageUtil.getMessage(&quot;validation.duplicate.isbn&quot;));</span>
+<span class="fc" id="L123">        return &quot;book/BK04_BookRegisterConfirm&quot;;</span>
       }
 
-<span class="fc" id="L124">      Book book = new Book();</span>
-<span class="fc" id="L125">      book.setTitle(form.getTitle());</span>
-<span class="fc" id="L126">      book.setAuthor(form.getAuthor());</span>
-<span class="fc" id="L127">      book.setPublisher(form.getPublisher());</span>
-<span class="fc" id="L128">      book.setPublishedDate(form.getPublishedDate());</span>
-<span class="fc" id="L129">      book.setIsbn(form.getIsbn());</span>
-<span class="fc" id="L130">      book.setCategoryId(form.getCategoryId());</span>
-<span class="fc" id="L131">      book.setPrice(form.getPrice());</span>
-<span class="fc" id="L132">      book.setDescription(form.getDescription());</span>
-<span class="fc" id="L133">      bookService.register(book);</span>
+<span class="fc" id="L126">      Book book = new Book();</span>
+<span class="fc" id="L127">      book.setTitle(form.getTitle());</span>
+<span class="fc" id="L128">      book.setAuthor(form.getAuthor());</span>
+<span class="fc" id="L129">      book.setPublisher(form.getPublisher());</span>
+<span class="fc" id="L130">      book.setPublishedDate(form.getPublishedDate());</span>
+<span class="fc" id="L131">      book.setIsbn(form.getIsbn());</span>
+<span class="fc" id="L132">      book.setCategoryId(form.getCategoryId());</span>
+<span class="fc" id="L133">      book.setPrice(form.getPrice());</span>
+<span class="fc" id="L134">      book.setDescription(form.getDescription());</span>
+<span class="fc" id="L135">      book.setRecommended(form.getRecommended());</span>
+<span class="fc" id="L136">      bookService.register(book);</span>
 
-<span class="fc" id="L135">      session.removeAttribute(BookConstants.SESSION_REGISTER_FORM);</span>
-<span class="fc" id="L136">      return &quot;redirect:/book/create/complete?bookId=&quot; + book.getBookId();</span>
-<span class="fc" id="L137">    } catch (Exception e) {</span>
-<span class="fc" id="L138">      ExceptionLogger.log(e);</span>
-<span class="fc" id="L139">      model.addAttribute(&quot;form&quot;, form);</span>
-<span class="fc" id="L140">      model.addAttribute(&quot;categoryName&quot;, resolveCategoryName(form.getCategoryId()));</span>
-<span class="fc" id="L141">      model.addAttribute(&quot;errorMessage&quot;, MessageUtil.getMessage(&quot;db.error.insert&quot;));</span>
-<span class="fc" id="L142">      return &quot;book/BK04_BookRegisterConfirm&quot;;</span>
+<span class="fc" id="L138">      session.removeAttribute(BookConstants.SESSION_REGISTER_FORM);</span>
+<span class="fc" id="L139">      return &quot;redirect:/book/create/complete?bookId=&quot; + book.getBookId();</span>
+<span class="fc" id="L140">    } catch (Exception e) {</span>
+<span class="fc" id="L141">      ExceptionLogger.log(e);</span>
+<span class="fc" id="L142">      model.addAttribute(&quot;form&quot;, form);</span>
+<span class="fc" id="L143">      model.addAttribute(&quot;categoryName&quot;, resolveCategoryName(form.getCategoryId()));</span>
+<span class="fc" id="L144">      model.addAttribute(&quot;errorMessage&quot;, MessageUtil.getMessage(&quot;db.error.insert&quot;));</span>
+<span class="fc" id="L145">      return &quot;book/BK04_BookRegisterConfirm&quot;;</span>
     }
   }
 
@@ -148,41 +151,41 @@ public class BookRegisterController {
    */
   @GetMapping(&quot;/book/create/complete&quot;)
   public String registerComplete(@RequestParam Integer bookId, Model model) {
-<span class="fc" id="L151">    model.addAttribute(&quot;bookId&quot;, bookId);</span>
-<span class="fc" id="L152">    return &quot;book/BK05_BookRegisterComplete&quot;;</span>
+<span class="fc" id="L154">    model.addAttribute(&quot;bookId&quot;, bookId);</span>
+<span class="fc" id="L155">    return &quot;book/BK05_BookRegisterComplete&quot;;</span>
   }
 
   private void trySetPublishedDate(BookRegisterForm form, String publishedDate) {
     try {
-<span class="fc" id="L157">      form.setPublishedDate(LocalDate.parse(publishedDate));</span>
-<span class="fc" id="L158">    } catch (Exception e) {</span>
-<span class="fc" id="L159">      form.setPublishedDate(null);</span>
-<span class="fc" id="L160">    }</span>
-<span class="fc" id="L161">  }</span>
+<span class="fc" id="L160">      form.setPublishedDate(LocalDate.parse(publishedDate));</span>
+<span class="fc" id="L161">    } catch (Exception e) {</span>
+<span class="fc" id="L162">      form.setPublishedDate(null);</span>
+    }
+<span class="fc" id="L164">  }</span>
 
   private void trySetCategoryId(BookRegisterForm form, String category) {
     try {
-<span class="fc" id="L165">      form.setCategoryId(Integer.valueOf(category));</span>
-<span class="fc" id="L166">    } catch (Exception e) {</span>
-<span class="fc" id="L167">      form.setCategoryId(null);</span>
-<span class="fc" id="L168">    }</span>
-<span class="fc" id="L169">  }</span>
+<span class="fc" id="L168">      form.setCategoryId(Integer.valueOf(category));</span>
+<span class="fc" id="L169">    } catch (Exception e) {</span>
+<span class="fc" id="L170">      form.setCategoryId(null);</span>
+    }
+<span class="fc" id="L172">  }</span>
 
   private void trySetPrice(BookRegisterForm form, String price) {
     try {
-<span class="fc" id="L173">      form.setPrice(Integer.valueOf(price));</span>
-<span class="fc" id="L174">    } catch (Exception e) {</span>
-<span class="fc" id="L175">      form.setPrice(null);</span>
-<span class="fc" id="L176">    }</span>
-<span class="fc" id="L177">  }</span>
+<span class="fc" id="L176">      form.setPrice(Integer.valueOf(price));</span>
+<span class="fc" id="L177">    } catch (Exception e) {</span>
+<span class="fc" id="L178">      form.setPrice(null);</span>
+    }
+<span class="fc" id="L180">  }</span>
 
   private String resolveCategoryName(Integer categoryId) {
-<span class="fc" id="L180">    List&lt;Category&gt; categories = categoryService.findAll();</span>
-<span class="fc" id="L181">    return categories.stream()</span>
-<span class="fc" id="L182">        .filter(c -&gt; c.getCategoryId().equals(categoryId))</span>
-<span class="fc" id="L183">        .map(Category::getCategoryName)</span>
-<span class="fc" id="L184">        .findFirst()</span>
-<span class="fc" id="L185">        .orElse(&quot;&quot;);</span>
+<span class="fc" id="L183">    List&lt;Category&gt; categories = categoryService.findAll();</span>
+<span class="fc" id="L184">    return categories.stream()</span>
+<span class="fc" id="L185">        .filter(c -&gt; c.getCategoryId().equals(categoryId))</span>
+<span class="fc" id="L186">        .map(Category::getCategoryName)</span>
+<span class="fc" id="L187">        .findFirst()</span>
+<span class="fc" id="L188">        .orElse(&quot;&quot;);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
