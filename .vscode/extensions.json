@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-boot-dev-pack",
+        "GabrielBB.vscode-lombok",
+        "github.copilot-chat",
+        "ms-ceintl.vscode-language-pack-ja"
+    ]
+}

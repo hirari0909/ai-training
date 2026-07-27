@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生成AIの基本特性</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a2332;
+    background: #f0f4f8;
+  }
+
+  /* ===== LAYOUT ===== */
+  .page-wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,.10);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* ===== HEADER ===== */
+  .doc-header {
+    background: linear-gradient(135deg, #0f2b4e 0%, #1a5fb4 50%, #3584e4 100%);
+    color: #fff;
+    padding: 48px 48px 40px;
+    position: relative;
+  }
+  .doc-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #06d6a0, #118ab2, #06d6a0);
+  }
+  .doc-header .label {
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #93c5fd;
+    margin-bottom: 10px;
+  }
+  .doc-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin-bottom: 12px;
+  }
+  .doc-header .subtitle {
+    font-size: .95rem;
+    color: #bfdbfe;
+    line-height: 1.7;
+    max-width: 680px;
+  }
+  .doc-header .meta {
+    font-size: 13px;
+    color: #bfdbfe;
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  /* ===== CONTENT ===== */
+  .doc-body {
+    padding: 48px;
+  }
+
+  /* ===== HEADINGS ===== */
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1a3a6e;
+    border-left: 5px solid #2563b0;
+    padding-left: 14px;
+    margin: 44px 0 18px;
+  }
+  h2:first-child { margin-top: 0; }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e4a8a;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed #bfdbfe;
+    margin: 32px 0 14px;
+  }
+  h4 {
+    font-size: .95rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 22px 0 10px;
+  }
+
+  /* ===== PARAGRAPH ===== */
+  p { margin-bottom: 16px; color: #374151; }
+
+  /* ===== TABLE ===== */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.08);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .93rem;
+  }
+  thead tr {
+    background: #1a3a6e;
+    color: #fff;
+  }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  tbody tr:nth-child(even) { background: #eff6ff; }
+  tbody tr:hover { background: #dbeafe; }
+  tbody td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #374151;
+  }
+  td.center { text-align: center; }
+
+  /* ===== BADGE ===== */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-weight: 600;
+  }
+  .badge-green { background: #d1fae5; color: #065f46; }
+  .badge-yellow { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-blue { background: #dbeafe; color: #1e40af; }
+  .badge-gray { background: #f3f4f6; color: #374151; }
+
+  /* ===== BLOCKQUOTE ===== */
+  blockquote {
+    margin: 20px 0;
+    padding: 18px 24px;
+    background: #eff6ff;
+    border-left: 5px solid #2563b0;
+    border-radius: 0 8px 8px 0;
+    color: #1e4a8a;
+    font-size: .97rem;
+    position: relative;
+  }
+  blockquote p { margin: 0; color: #1e4a8a; }
+  blockquote strong { color: #1a3a6e; }
+
+  /* ===== LISTS ===== */
+  ul, ol {
+    margin: 14px 0 14px 8px;
+    padding-left: 20px;
+    color: #374151;
+  }
+  li { margin-bottom: 8px; }
+  ul li::marker { color: #2563b0; }
+
+  /* ===== CALLOUT ===== */
+  .callout {
+    display: flex;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: .93rem;
+    line-height: 1.7;
+  }
+  .callout-info { background: #eff6ff; border: 1px solid #93c5fd; }
+  .callout-tip { background: #ecfdf5; border: 1px solid #6ee7b7; }
+  .callout-warn { background: #fffbeb; border: 1px solid #fcd34d; }
+  .callout-danger { background: #fef2f2; border: 1px solid #fca5a5; }
+  .callout-important { background: #faf5ff; border: 1px solid #c4b5fd; }
+  .callout-icon { font-size: 1.2rem; flex-shrink: 0; padding-top: 1px; }
+  .callout p { margin: 0; }
+  .callout ul { margin: 6px 0 0 0; }
+
+  /* ===== CODE BLOCK (DIAGRAM) ===== */
+  .diagram-block {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: .88rem;
+    line-height: 1.6;
+    color: #334155;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* ===== INLINE CODE ===== */
+  code {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: .88em;
+    color: #d63384;
+  }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+    margin: 36px 0;
+  }
+
+  /* ===== SUMMARY BOX ===== */
+  .summary-box {
+    background: linear-gradient(135deg, #0f2b4e 0%, #1a5fb4 100%);
+    color: #fff;
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin: 28px 0;
+  }
+  .summary-box h3 {
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,.25);
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    font-size: 1.1rem;
+  }
+  .summary-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #e0e7ff;
+  }
+  .summary-box li {
+    padding: 5px 0 5px 28px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .summary-box li::before {
+    content: '✅';
+    position: absolute;
+    left: 0;
+    top: 5px;
+  }
+  .summary-box .highlight-line {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.25);
+    font-weight: 600;
+    color: #fde68a;
+    font-size: 1rem;
+  }
+
+  /* ===== COMPARISON TABLE ===== */
+  .comparison-table tbody td:first-child {
+    font-weight: 600;
+    color: #1a3a6e;
+    background: #f8fafc;
+    white-space: nowrap;
+  }
+
+  /* ===== NUMBER BADGE (for best practices) ===== */
+  .num-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #2563b0;
+    color: #fff;
+    font-size: .78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ===== FOOTER ===== */
+  .doc-footer {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .82rem;
+    color: #9ca3af;
+  }
+
+  /* ===== PRINT STYLES ===== */
+  @media print {
+    @page {
+      size: A4;
+      margin: 15mm;
+    }
+
+    body {
+      background: #fff;
+      font-size: 11pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      color-adjust: exact;
+    }
+
+    .page-wrapper {
+      max-width: 100%;
+      margin: 0;
+      box-shadow: none;
+      border-radius: 0;
+    }
+
+    .doc-header {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Prevent breaks inside key blocks */
+    h2, h3, h4 {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    h2 + *, h3 + *, h4 + * {
+      break-before: avoid;
+      page-break-before: avoid;
+    }
+
+    tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    blockquote, .callout, .diagram-block, .summary-box, .table-wrap {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* Forced page break */
+    .page-break {
+      break-before: page;
+      page-break-before: always;
+      height: 0;
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+    .page-break::before {
+      display: none;
+    }
+  }
+
+  /* Page break indicator (screen only) */
+  .page-break {
+    border: none;
+    border-top: 2px dashed #d1d5db;
+    margin: 32px 0;
+    position: relative;
+    height: 0;
+  }
+  .page-break::before {
+    content: '\2702  改ページ';
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 0 12px;
+    font-size: .78rem;
+    color: #9ca3af;
+    letter-spacing: .05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="doc-header">
+    <div class="label">Training Material &nbsp;|&nbsp; 研修参考資料</div>
+    <h1>🤖 生成AIの基本特性</h1>
+    <div class="subtitle">
+      生成AIを業務で活用するうえで知っておくべき<strong>基本的な仕組みと挙動</strong>をまとめた資料です。<br>
+      「なぜそう動くのか」を理解することで、より効果的にAIを使いこなせるようになります。
+    </div>
+    <div class="meta">
+      <span>📅 作成日：2026年4月</span>
+      <span>📄 種別：研修参考資料</span>
+    </div>
+  </div>
+
+  <!-- 本文 -->
+  <div class="doc-body">
+
+    <!-- ============================== -->
+    <!-- セクション1: 基本的な挙動 -->
+    <!-- ============================== -->
+    <h2>📌 1. 生成AIの基本的な挙動</h2>
+
+    <!-- 1-1 -->
+    <h3>1-1. 「学習させる」はできない</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>よくある誤解</th>
+            <th>実際の挙動</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>「AIに教えれば覚えてくれる」</td>
+            <td>利用者がモデル自体を学習させる機能は<strong style="color:#dc2626;">存在しない</strong></td>
+          </tr>
+          <tr>
+            <td>「使い続ければ賢くなる」</td>
+            <td>モデルの知識は<strong style="color:#dc2626;">学習済みデータで固定</strong>されている</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul>
+      <li>生成AIのモデルは、提供元（OpenAI、Google、Anthropicなど）が<strong>事前に大量のデータで訓練</strong>したものです</li>
+      <li>利用者が会話を通じてモデルの知識を更新・追加することは<strong>できません</strong></li>
+      <li>会話中に「覚えて」と言っても、それはそのセッション内でのみ有効であり、モデル自体は変化しません</li>
+    </ul>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ️</span>
+      <div>
+        <p><strong>Fine-tuning（ファインチューニング）</strong> や <strong>RAG（検索拡張生成）</strong> といった技術を使えば、特定の知識を活用させることは可能ですが、これは通常の利用者が行う操作ではなく、開発者・管理者レベルの作業です。</p>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- 1-2 -->
+    <h3>1-2. 要求は「プロンプト」で行う</h3>
+
+    <p>生成AIへの指示・質問はすべて <strong>プロンプト（Prompt）</strong> と呼ばれるテキストで行います。</p>
+
+    <div class="diagram-block">┌─────────────────────────────────┐
+│  プロンプト（入力）               │
+│  「○○について教えてください」     │
+└──────────────┬──────────────────┘
+               ▼
+        ┌──────────────┐
+        │  生成AIモデル  │
+        └──────┬───────┘
+               ▼
+┌─────────────────────────────────┐
+│  レスポンス（出力）               │
+│  「○○とは、～～です。」          │
+└─────────────────────────────────┘</div>
+
+    <h4>💡 プロンプトの質 ＝ 応答の質</h4>
+
+    <p>プロンプトの書き方によって、AIの応答品質は<strong>大きく変わります</strong>。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>プロンプトの例</th>
+            <th style="text-align:center;">品質</th>
+            <th>理由</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>「なんか教えて」</code></td>
+            <td class="center"><span class="badge badge-red">❌ 低い</span></td>
+            <td>曖昧すぎてAIが意図を特定できない</td>
+          </tr>
+          <tr>
+            <td><code>「Javaのインターフェースについて教えて」</code></td>
+            <td class="center"><span class="badge badge-yellow">⭕ 普通</span></td>
+            <td>トピックは明確だが、深さ・形式が不明</td>
+          </tr>
+          <tr>
+            <td><code>「Javaのインターフェースについて、初心者向けに、具体的なコード例を含めて説明してください」</code></td>
+            <td class="center"><span class="badge badge-green">✅ 高い</span></td>
+            <td>対象・レベル・形式が明確</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-tip">
+      <span class="callout-icon">💡</span>
+      <div>
+        <p><strong>良いプロンプトの要素：</strong></p>
+        <ul>
+          <li><strong>役割の指定</strong>：「あなたはJavaの講師です」</li>
+          <li><strong>具体的な指示</strong>：何を、どのように、どの程度</li>
+          <li><strong>出力形式の指定</strong>：「箇条書きで」「表形式で」「コード付きで」</li>
+          <li><strong>制約条件</strong>：「200文字以内で」「専門用語は避けて」</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- 1-3 -->
+    <h3>1-3. 通信はステートレスである</h3>
+
+    <p>生成AIとのやり取りは、<strong>ステートレス（Stateless）</strong> な通信です。</p>
+
+    <h4>ステートレスとは？</h4>
+
+    <div class="diagram-block">【ステートレス（生成AI）】
+  リクエスト1 → レスポンス1   ※これで完結。AIは何も覚えていない
+  リクエスト2 → レスポンス2   ※リクエスト1の内容は知らない
+
+【ステートフル（一般的なWebアプリ）】
+  リクエスト1 → レスポンス1   ※サーバーがセッションに状態を保存
+  リクエスト2 → レスポンス2   ※セッションから前回の状態を参照できる</div>
+
+    <div class="table-wrap comparison-table">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>ステートレス</th>
+            <th>ステートフル</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>状態の保持</td>
+            <td>サーバー側で保持<strong style="color:#dc2626;">しない</strong></td>
+            <td>サーバー側で保持<strong style="color:#059669;">する</strong></td>
+          </tr>
+          <tr>
+            <td>代表例</td>
+            <td>生成AI API、REST API</td>
+            <td>Webアプリのログインセッション</td>
+          </tr>
+          <tr>
+            <td>通信の単位</td>
+            <td>1リクエスト → 1レスポンスで完結</td>
+            <td>複数リクエストにまたがって状態を維持</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote>
+      <p><strong>技術的補足：</strong> 生成AIのAPI呼び出しは <code>HTTP Request → HTTP Response</code> の1往復で完結します。前回のやり取りを「覚えている」のはAI側ではなく、<strong>クライアント側の仕組み</strong>です。</p>
+    </blockquote>
+
+    <hr class="section-divider">
+
+    <!-- 1-4 -->
+    <h3>1-4. なぜ「会話」ができるのか？</h3>
+
+    <p>ステートレスなのに会話が成立する理由——それは<strong>クライアント側が過去の履歴をプロンプトに含めて送信している</strong>からです。</p>
+
+    <div class="diagram-block">【1回目のやり取り】
+  送信: 「Javaとは何ですか？」
+  応答: 「Javaとはプログラミング言語です。」
+
+【2回目のやり取り（実際に送信される内容）】
+  送信: 「ユーザー: Javaとは何ですか？
+         AI: Javaとはプログラミング言語です。
+         ユーザー: その特徴を教えてください」  ← 履歴 + 新しい質問
+  応答: 「Javaの特徴は、オブジェクト指向で…」</div>
+
+    <div class="callout callout-important">
+      <span class="callout-icon">⚡</span>
+      <div>
+        <p>AIが「前の会話を覚えている」ように見えるのは、<strong>毎回すべての会話履歴を送り直している</strong>からです。AI自身が記憶しているわけではありません。</p>
+      </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- ============================== -->
+    <!-- セクション2: セッション -->
+    <!-- ============================== -->
+    <h2>📌 2. AI Chatにおける「セッション」</h2>
+
+    <!-- 2-1 -->
+    <h3>2-1. セッションの概念</h3>
+
+    <p>AI Chatにおける <strong>セッション</strong> とは、1つの会話スレッド（やり取りの単位）を指します。</p>
+
+    <div class="diagram-block">セッションA（話題：Java研修）        セッションB（話題：設計レビュー）
+┌──────────────────────┐          ┌──────────────────────┐
+│ Q: Javaとは？          │          │ Q: ER図の書き方は？    │
+│ A: プログラミング言語…  │          │ A: エンティティを…     │
+│ Q: 特徴は？            │          │ Q: 正規化とは？       │
+│ A: オブジェクト指向で…  │          │ A: データの冗長性を…   │
+│ Q: 例を見せて          │          │        ：             │
+│        ：              │          └──────────────────────┘
+└──────────────────────┘
+※ セッションAとBは完全に独立。互いの内容は参照できない</div>
+
+    <hr class="section-divider">
+
+    <!-- 2-2 -->
+    <h3>2-2. セッションが長くなると起きる問題</h3>
+
+    <p>セッションを使い続けると、会話履歴が蓄積されていきます。これには<strong style="color:#dc2626;">3つの問題</strong>があります。</p>
+
+    <h4>⚠️ 問題① コンテキストウィンドウの上限</h4>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>問題</strong></td>
+            <td>履歴が長くなりすぎると、AIが処理できる入力サイズ（<strong>コンテキストウィンドウ</strong>）を超える</td>
+          </tr>
+          <tr>
+            <td><strong>結果</strong></td>
+            <td>古い会話が切り捨てられたり、エラーが発生する</td>
+          </tr>
+          <tr>
+            <td><strong>対策</strong></td>
+            <td>話題が変わったら<strong style="color:#2563b0;">新しいセッション</strong>を開始する</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote>
+      <p><strong>コンテキストウィンドウとは：</strong> AIが一度に処理できるテキスト量の上限。モデルによって異なり、例えばGPT-4oは128Kトークン、Claude Opusは200Kトークンなど。</p>
+    </blockquote>
+
+    <h4>⚠️ 問題② トピック混在による精度低下</h4>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>問題</strong></td>
+            <td>1つのセッションに<strong>複数の話題</strong>が混在すると、AIの応答精度が下がる</td>
+          </tr>
+          <tr>
+            <td><strong>原因</strong></td>
+            <td>AIはプロンプト全体を文脈として解釈するため、無関係な話題がノイズになる</td>
+          </tr>
+          <tr>
+            <td><strong>対策</strong></td>
+            <td><strong style="color:#2563b0;">1セッション = 1トピック</strong>を意識する</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>⚠️ 問題③ コストの増加</h4>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>問題</strong></td>
+            <td>履歴が長くなるほど、毎回送信するデータ量が増え、<strong style="color:#dc2626;">利用コストが増加</strong>する</td>
+          </tr>
+          <tr>
+            <td><strong>仕組み</strong></td>
+            <td>API利用料金は送受信した<strong>トークン数</strong>に基づいて課金される</td>
+          </tr>
+          <tr>
+            <td><strong>対策</strong></td>
+            <td>不要になったセッションは閉じ、こまめに新しいセッションを開始する</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">ℹ️</span>
+      <div>
+        <p><strong>トークンとは：</strong> AIが文章を処理する際の最小単位。日本語の場合、1文字が1〜3トークン程度に相当します。「こんにちは」は約5トークンです。</p>
+      </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- ============================== -->
+    <!-- セクション3: 出力特性 -->
+    <!-- ============================== -->
+    <h2>📌 3. 生成AIの出力特性</h2>
+
+    <p>AIを正しく活用するためには、その<strong>出力の性質</strong>を理解しておくことが重要です。</p>
+
+    <!-- 3-1 -->
+    <h3>3-1. 確率的な応答（同じ入力でも結果が変わる）</h3>
+
+    <p>生成AIは、次に来るべき単語を<strong>確率的に選択</strong>して文章を生成します。そのため、<strong>同じプロンプトでも毎回異なる応答</strong>が返ることがあります。</p>
+
+    <div class="diagram-block">同じプロンプト「Javaの特徴を3つ教えて」
+
+  1回目の応答: ① オブジェクト指向 ② プラットフォーム非依存 ③ ガベージコレクション
+  2回目の応答: ① 静的型付け ② マルチスレッド ③ 豊富なライブラリ</div>
+
+    <blockquote>
+      <p>この性質は<strong>temperature（温度）</strong> というパラメータで制御できます。温度が低いほど決定的（毎回同じ）な応答になり、高いほど創造的（ばらつきのある）応答になります。</p>
+    </blockquote>
+
+    <hr class="section-divider">
+
+    <!-- 3-2 -->
+    <h3>3-2. ハルシネーション（もっともらしい嘘）</h3>
+
+    <p>生成AIは、<strong>事実と異なる内容をあたかも正しいかのように出力する</strong>ことがあります。これを <strong style="color:#dc2626;">ハルシネーション（Hallucination：幻覚）</strong> と呼びます。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>特徴</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>なぜ起きる</strong></td>
+            <td>AIは「確率的にもっともらしい文章」を生成しているだけで、事実を検証していない</td>
+          </tr>
+          <tr>
+            <td><strong>どんな時に多い</strong></td>
+            <td>学習データに含まれていない情報、最新の情報、ニッチな専門知識</td>
+          </tr>
+          <tr>
+            <td><strong>対策</strong></td>
+            <td>重要な情報は必ず<strong style="color:#dc2626;">一次情報源で裏取り</strong>する。AIの出力を鵜呑みにしない</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-danger">
+      <span class="callout-icon">🚨</span>
+      <div>
+        <p><strong>業務でAIを活用する際の鉄則：</strong><br>
+        AIの出力は「下書き」や「たたき台」として扱い、<strong>最終的な判断・確認は必ず人間が行う</strong>こと。</p>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- 3-3 -->
+    <h3>3-3. 学習データの知識の範囲（カットオフ）</h3>
+
+    <p>生成AIの知識には<strong>期限</strong>があります。これを <strong>ナレッジカットオフ（Knowledge Cutoff）</strong> と呼びます。</p>
+
+    <ul>
+      <li>モデルは学習時点までのデータしか持っていません</li>
+      <li>カットオフ以降に起きた出来事や変更された情報については、<strong style="color:#dc2626;">正確に回答できない</strong>可能性があります</li>
+      <li>最新情報が必要な場合は、<strong>Web検索機能付きのAI</strong>や<strong>RAG</strong>の活用を検討してください</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <!-- ============================== -->
+    <!-- セクション4: ベストプラクティス -->
+    <!-- ============================== -->
+    <h2>📌 4. 効果的なAI活用のためのベストプラクティス</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:50px;text-align:center;">#</th>
+            <th style="width:200px;">プラクティス</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="center"><span class="num-badge">1</span></td>
+            <td><strong>1セッション1トピック</strong></td>
+            <td>話題が変わったら新しいセッションを開始する</td>
+          </tr>
+          <tr>
+            <td class="center"><span class="num-badge">2</span></td>
+            <td><strong>プロンプトは具体的に</strong></td>
+            <td>役割・条件・出力形式を明示する</td>
+          </tr>
+          <tr>
+            <td class="center"><span class="num-badge">3</span></td>
+            <td><strong>出力は必ず検証する</strong></td>
+            <td>ハルシネーションの可能性を常に意識する</td>
+          </tr>
+          <tr>
+            <td class="center"><span class="num-badge">4</span></td>
+            <td><strong>長いセッションは避ける</strong></td>
+            <td>コスト・精度の両面でデメリットがある</td>
+          </tr>
+          <tr>
+            <td class="center"><span class="num-badge">5</span></td>
+            <td><strong>段階的に質問する</strong></td>
+            <td>一度に多くを求めず、ステップバイステップで深掘りする</td>
+          </tr>
+          <tr>
+            <td class="center"><span class="num-badge">6</span></td>
+            <td><strong>出力形式を指定する</strong></td>
+            <td>「表で」「コード付きで」「箇条書きで」など形式を明示する</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ============================== -->
+    <!-- セクション5: まとめ -->
+    <!-- ============================== -->
+    <h2>📌 5. まとめ</h2>
+
+    <div class="summary-box">
+      <h3>生成AIの基本特性</h3>
+      <ul>
+        <li>利用者がモデルを学習させることはできない</li>
+        <li>すべての指示はプロンプト（テキスト）で行う</li>
+        <li>通信はステートレス（1リクエスト1レスポンスで完結）</li>
+        <li>会話の継続はクライアント側が履歴を送り直すことで実現</li>
+        <li>同じ入力でも異なる出力が返る（確率的生成）</li>
+        <li>もっともらしい嘘をつくことがある（ハルシネーション）</li>
+        <li>知識には期限がある（ナレッジカットオフ）</li>
+      </ul>
+      <div class="highlight-line">
+        💡 AIの出力は「たたき台」。最終判断は必ず人間が行う。
+      </div>
+    </div>
+
+  </div>
+
+  <!-- フッター -->
+  <div class="doc-footer">
+    <span>研修参考資料 &nbsp;|&nbsp; 生成AIの基本特性</span>
+    <span>最終更新：2026年4月</span>
+  </div>
+</div>
+
+</body>
+</html>

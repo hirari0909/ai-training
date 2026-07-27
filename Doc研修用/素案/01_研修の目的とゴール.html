@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI支援型開発研修 — 目的とゴール</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tiffany:       #0ABAB5;
+    --tiffany-light: #7EDCD9;
+    --tiffany-pale:  #E0F7F6;
+    --tiffany-dark:  #089B97;
+    --gray-900:      #1A1A2E;
+    --gray-700:      #3D3D56;
+    --gray-500:      #6B6B80;
+    --gray-300:      #B0B0C0;
+    --gray-100:      #F0F0F5;
+    --white:         #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    overflow-x: hidden;
+  }
+
+  /* ========== SLIDE COMMON ========== */
+  .slide {
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ---- Top Bar ---- */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 56px;
+    flex-shrink: 0;
+  }
+  .top-bar .logo {
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.15em;
+    color: var(--gray-500);
+    text-transform: uppercase;
+  }
+  .top-bar .page-num {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--tiffany);
+    background: var(--tiffany-pale);
+    padding: 4px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+  }
+  .top-bar .section-label {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--gray-500);
+    letter-spacing: 0.06em;
+  }
+
+  /* ---- Slide Body ---- */
+  .slide-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 56px 32px;
+    gap: 0;
+  }
+
+  /* ---- Footer ---- */
+  .slide-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 56px;
+    background: var(--gray-900);
+    color: rgba(255,255,255,0.5);
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .slide-footer .nav-hint { color: var(--tiffany-light); font-weight: 500; }
+
+  /* ---- Shared hero title style ---- */
+  .hero-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 8px;
+  }
+  .hero-row .accent-line {
+    width: 5px;
+    height: 56px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--tiffany), var(--tiffany-dark));
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .hero-row h1 {
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--gray-900);
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+  .hero-row h1 span {
+    color: var(--tiffany-dark);
+  }
+  .hero-sub {
+    font-size: 20px;
+    color: var(--gray-500);
+    margin-left: 45px;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  /* ========================================
+     SLIDE 1 — 背景
+     ======================================== */
+  .slide-1 {
+    background: linear-gradient(168deg, var(--white) 60%, var(--tiffany-pale) 100%);
+  }
+
+  /* 3-column cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+  }
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px 26px 22px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--tiffany), var(--tiffany-light));
+    border-radius: 16px 16px 0 0;
+  }
+  .card:hover { transform: translateY(-3px); }
+
+  .card .card-icon {
+    width: 60px; height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+  .card .card-icon.tiffany { background: var(--tiffany-pale); color: var(--tiffany-dark); }
+  .card .card-icon.gray     { background: var(--gray-100);     color: var(--gray-700); }
+  .card .card-icon.dark     { background: var(--gray-900);     color: var(--tiffany-light); }
+
+  .card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  .card ul {
+    list-style: none;
+    padding: 0;
+    flex: 1;
+  }
+  .card ul li {
+    font-size: 19px;
+    line-height: 1.65;
+    color: var(--gray-700);
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  .card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--tiffany);
+  }
+  .card ul li.sub {
+    padding-left: 32px;
+    color: var(--gray-500);
+    font-size: 17px;
+  }
+  .card ul li.sub::before {
+    left: 18px;
+    width: 5px; height: 5px;
+    background: var(--gray-300);
+  }
+
+  /* ========================================
+     SLIDE 2 — 我々が守りたい立ち位置
+     ======================================== */
+  .slide-2 {
+    background: linear-gradient(168deg, var(--gray-100) 40%, var(--white) 100%);
+  }
+
+  .slide-2 .slide-body {
+    justify-content: center;
+  }
+
+  /* Stance cards - large format */
+  .stance-grid {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    align-items: stretch;
+  }
+  .stance-card {
+    flex: 1;
+    border-radius: 18px;
+    padding: 32px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .stance-card:hover { transform: translateY(-3px); }
+  .stance-card .stance-icon {
+    width: 72px; height: 72px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+  }
+  .stance-card h3 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .stance-card p {
+    font-size: 20px;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+  .stance-card .stance-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 6px;
+    align-self: flex-start;
+  }
+
+  /* OK card */
+  .stance-card.ok {
+    background: var(--white);
+    border: 2px solid var(--tiffany);
+    box-shadow: 0 4px 24px rgba(10,186,181,0.12);
+  }
+  .stance-card.ok::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--tiffany), var(--tiffany-light));
+  }
+  .stance-card.ok .stance-icon {
+    background: var(--tiffany-pale);
+    color: var(--tiffany-dark);
+  }
+  .stance-card.ok h3 { color: var(--gray-900); }
+  .stance-card.ok p { color: var(--gray-700); }
+  .stance-card.ok .stance-label {
+    background: var(--tiffany-pale);
+    color: var(--tiffany-dark);
+  }
+
+  /* NG cards */
+  .stance-card.ng {
+    background: var(--white);
+    border: 1.5px solid var(--gray-300);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  }
+  .stance-card.ng .stance-icon {
+    background: var(--gray-100);
+    color: var(--gray-500);
+  }
+  .stance-card.ng h3 { color: var(--gray-500); }
+  .stance-card.ng p { color: var(--gray-500); }
+  .stance-card.ng .stance-label {
+    background: var(--gray-100);
+    color: var(--gray-500);
+  }
+
+  /* Conclusion banner */
+  .conclusion-banner {
+    margin-top: 28px;
+    background: var(--gray-900);
+    color: var(--white);
+    border-radius: 14px;
+    padding: 22px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 1.7;
+  }
+  .conclusion-banner .banner-icon {
+    width: 68px; height: 68px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--tiffany), var(--tiffany-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: var(--white);
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(10,186,181,0.3);
+  }
+  .conclusion-banner b { color: var(--tiffany-light); }
+
+  /* ========================================
+     SLIDE 3 — 本日のゴール
+     ======================================== */
+  .slide-3 {
+    background: var(--gray-900);
+    color: var(--white);
+  }
+  .slide-3 .top-bar .logo { color: var(--gray-300); }
+  .slide-3 .top-bar .page-num {
+    background: rgba(10,186,181,0.15);
+    color: var(--tiffany-light);
+  }
+  .slide-3 .top-bar .section-label { color: var(--gray-300); }
+
+  .slide-3 .slide-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .title-area {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .title-area .kicker {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--tiffany-light);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    background: rgba(10,186,181,0.12);
+    padding: 5px 18px;
+    border-radius: 20px;
+  }
+  .title-area h1 {
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+  .title-area h1 em {
+    font-style: normal;
+    color: var(--tiffany);
+  }
+
+  /* Goal cards */
+  .goal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .goal-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 32px 30px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    backdrop-filter: blur(6px);
+    transition: transform 0.2s, background 0.2s;
+    position: relative;
+  }
+  .goal-card:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-3px);
+  }
+  .goal-card .goal-num {
+    position: absolute;
+    top: 20px; right: 24px;
+    font-size: 72px;
+    font-weight: 900;
+    color: rgba(10,186,181,0.10);
+    line-height: 1;
+  }
+  .goal-card .goal-icon {
+    width: 68px; height: 68px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--tiffany), var(--tiffany-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--white);
+    box-shadow: 0 4px 16px rgba(10,186,181,0.3);
+  }
+  .goal-card h3 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.5;
+  }
+  .goal-card p {
+    font-size: 20px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+  .goal-card .tag {
+    display: inline-block;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: rgba(10,186,181,0.15);
+    color: var(--tiffany-light);
+    letter-spacing: 0.04em;
+    align-self: flex-start;
+  }
+
+  /* Schedule strip */
+  .schedule-strip {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    max-width: 1200px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sched-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+  }
+  .sched-item:first-child { border-radius: 12px 0 0 12px; }
+  .sched-item:last-child  { border-radius: 0 12px 12px 0; }
+  .sched-item i { color: var(--tiffany); font-size: 21px; }
+  .sched-item .time {
+    font-size: 16px;
+    color: var(--tiffany-light);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .slide-3 .slide-footer {
+    background: rgba(0,0,0,0.3);
+  }
+
+  /* ========== Navigation ========== */
+  .nav-btn {
+    position: fixed;
+    right: 28px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--tiffany);
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 4px 14px rgba(10,186,181,0.35);
+    transition: transform 0.2s, opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-btn:hover { transform: scale(1.1); }
+  #nav-down { bottom: 64px; }
+  #nav-up   { bottom: 120px; opacity: 0.7; }
+
+  /* Page indicator */
+  .page-indicator {
+    position: fixed;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+  }
+  .page-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--gray-300);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    padding: 0;
+  }
+  .page-dot.active {
+    background: var(--tiffany);
+    transform: scale(1.3);
+  }
+
+  /* Print / PDF */
+  @media print {
+    .slide { page-break-after: always; }
+    .nav-btn, .page-indicator { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SLIDE 1 — 背景 : なぜ今 AI 支援型開発なのか？
+     ============================================================ -->
+<section class="slide slide-1" id="slide1">
+
+  <div class="top-bar">
+    <span class="logo"><i class="fa-solid fa-diamond"></i>&ensp;SKI Group — AI研修 2025</span>
+    <span class="section-label">1. 研修の目的とゴール</span>
+    <span class="page-num">01 / 03</span>
+  </div>
+
+  <div class="slide-body">
+
+    <div class="hero-row">
+      <div class="accent-line"></div>
+      <h1>背景 — <span>なぜ今、AI 支援型開発なのか？</span></h1>
+    </div>
+    <p class="hero-sub">市場・顧客・社内、3つの視点からAI活用の必然性を捉える</p>
+
+    <div class="card-grid">
+
+      <!-- Card 1: 市場の変化 -->
+      <div class="card">
+        <div class="card-icon tiffany"><i class="fa-solid fa-chart-line"></i></div>
+        <h3><i class="fa-solid fa-globe" style="color:var(--tiffany);margin-right:6px;font-size:20px;"></i>市場の変化</h3>
+        <ul>
+          <li>AIが単なるチャットから<b>エージェント型開発支援ツール</b>へ進化</li>
+          <li>AI支援型開発の事例が急速に増加</li>
+          <li class="sub">GitHub Copilot / Cline / Cursor 等の台頭</li>
+        </ul>
+      </div>
+
+      <!-- Card 2: 顧客の声 -->
+      <div class="card">
+        <div class="card-icon gray"><i class="fa-solid fa-comments"></i></div>
+        <h3><i class="fa-solid fa-building" style="color:var(--gray-500);margin-right:6px;font-size:20px;"></i>顧客からの声</h3>
+        <ul>
+          <li>AIで<b>生産性・品質</b>を向上させたい</li>
+          <li>よりスピーディな開発サイクルを実現したい</li>
+          <li>AIを自社サービスに組み込み<b>課題解決</b>を図りたい</li>
+          <li class="sub">コールセンター無人化（SMBC事例）</li>
+          <li class="sub">SKI-AI面接官</li>
+        </ul>
+      </div>
+
+      <!-- Card 3: SKI案件 -->
+      <div class="card">
+        <div class="card-icon dark"><i class="fa-solid fa-rocket"></i></div>
+        <h3><i class="fa-solid fa-briefcase" style="color:var(--tiffany);margin-right:6px;font-size:20px;"></i>SKIで動いている案件</h3>
+        <ul>
+          <li>AI関連案件が<b>想定以上に稼働中</b></li>
+          <li>案件一覧から現状の広がりを確認</li>
+          <li class="sub">既に顧客接点は生まれている</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>AI支援型開発研修 &nbsp;|&nbsp; 9:00 – 9:30</span>
+    <span class="nav-hint"><i class="fa-solid fa-arrow-down" style="margin-right:4px;"></i> スクロールで次のスライドへ</span>
+    <span>Confidential</span>
+  </div>
+
+</section>
+
+
+<!-- ============================================================
+     SLIDE 2 — 我々が守りたい立ち位置
+     ============================================================ -->
+<section class="slide slide-2" id="slide2">
+
+  <div class="top-bar">
+    <span class="logo"><i class="fa-solid fa-diamond"></i>&ensp;SKI Group — AI研修 2025</span>
+    <span class="section-label">1. 研修の目的とゴール</span>
+    <span class="page-num">02 / 03</span>
+  </div>
+
+  <div class="slide-body">
+
+    <div class="hero-row">
+      <div class="accent-line"></div>
+      <h1>我々が守りたい<span>立ち位置</span></h1>
+    </div>
+    <p class="hero-sub">AI時代における3つのスタンスを比較し、目指すべき姿を明確にする</p>
+
+    <div class="stance-grid">
+
+      <!-- OK -->
+      <div class="stance-card ok">
+        <div class="stance-label"><i class="fa-solid fa-circle-check"></i> 目指すべき姿</div>
+        <div class="stance-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+        <h3>顧客と伴走し、AI時代も<br>課題解決にコミットする存在</h3>
+        <p>業務・システム・設計・実作業を深く理解している我々だからこそ、顧客のAI活用を支援し、共に歩める。</p>
+      </div>
+
+      <!-- NG 1 -->
+      <div class="stance-card ng">
+        <div class="stance-label"><i class="fa-solid fa-circle-xmark"></i> NG</div>
+        <div class="stance-icon"><i class="fa-solid fa-hand"></i></div>
+        <h3>顧客からの相談に<br>乗れない</h3>
+        <p>「この問題はAIで解決できますね」という流れに乗れず、顧客の期待に応えられない状態。</p>
+      </div>
+
+      <!-- NG 2 -->
+      <div class="stance-card ng">
+        <div class="stance-label"><i class="fa-solid fa-circle-xmark"></i> NG</div>
+        <div class="stance-icon"><i class="fa-solid fa-person-circle-question"></i></div>
+        <h3>AI標準化プロセスが<br>来るまで無関心</h3>
+        <p>「何をすればいいですか？」と聞くだけの受け身スタンス。悪い下請け体質から脱却できない。</p>
+      </div>
+
+    </div>
+
+    <!-- Conclusion -->
+    <div class="conclusion-banner">
+      <div class="banner-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+      <span>近い将来（今年・来年）にAIを活用した開発が当たり前の世界が到来する。<br>業務・システム・設計・実作業を押さえている<b>我々への相談は確実に増える。</b></span>
+    </div>
+
+  </div>
+
+  <div class="slide-footer">
+    <span>AI支援型開発研修 &nbsp;|&nbsp; 9:00 – 9:30</span>
+    <span class="nav-hint"><i class="fa-solid fa-arrow-down" style="margin-right:4px;"></i> スクロールで次のスライドへ</span>
+    <span>Confidential</span>
+  </div>
+
+</section>
+
+
+<!-- ============================================================
+     SLIDE 3 — 本日のゴール
+     ============================================================ -->
+<section class="slide slide-3" id="slide3">
+
+  <div class="top-bar">
+    <span class="logo"><i class="fa-solid fa-diamond"></i>&ensp;SKI Group — AI研修 2025</span>
+    <span class="section-label">1. 研修の目的とゴール</span>
+    <span class="page-num">03 / 03</span>
+  </div>
+
+  <div class="slide-body">
+
+    <div class="title-area">
+      <div class="kicker"><i class="fa-solid fa-laptop-code" style="margin-right:8px;"></i>AI支援型開発研修</div>
+      <h1 style="font-size:72px;"><em>SEに戻る1日!</em></h1>
+    </div>
+
+    <div class="goal-grid">
+
+      <!-- Goal 1 -->
+      <div class="goal-card">
+        <span class="goal-num">01</span>
+        <div class="goal-icon"><i class="fa-solid fa-laptop-code"></i></div>
+        <div class="tag"><i class="fa-solid fa-code" style="margin-right:4px;"></i>ハンズオン体験</div>
+        <h3>AI支援型開発時代の<br>SE作業を体験する</h3>
+        <p>参加者全員がVS Code + Clineを使い、全カリキュラムを実際に手を動かして消化。AIを活用した開発の<b style="color:var(--tiffany-light);">リアルなイメージ</b>を掴む。</p>
+        <div class="tag" style="background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.4);">
+          <i class="fa-solid fa-star" style="margin-right:4px;color:var(--tiffany);"></i>SEに戻る1日!
+        </div>
+      </div>
+
+      <!-- Goal 2 -->
+      <div class="goal-card">
+        <span class="goal-num">02</span>
+        <div class="goal-icon"><i class="fa-solid fa-handshake"></i></div>
+        <div class="tag"><i class="fa-solid fa-users" style="margin-right:4px;"></i>顧客対応力</div>
+        <h3>明日の顧客相談に<br>対応できるイメージを持つ</h3>
+        <p>「AIを活用した開発をしたい」という顧客からの相談に対し、<b style="color:var(--tiffany-light);">どう対応すべきか</b>の具体的なイメージを獲得する。</p>
+        <div class="tag" style="background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.4);">
+          <i class="fa-solid fa-comments" style="margin-right:4px;color:var(--tiffany);"></i>相談に乗れるSEへ
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div class="slide-footer">
+    <span>AI支援型開発研修 &nbsp;|&nbsp; 9:00 – 9:30</span>
+    <span></span>
+    <span>Confidential</span>
+  </div>
+
+</section>
+
+
+<!-- Page Indicator (right side dots) -->
+<div class="page-indicator">
+  <button class="page-dot active" onclick="document.getElementById('slide1').scrollIntoView({behavior:'smooth'})"></button>
+  <button class="page-dot" onclick="document.getElementById('slide2').scrollIntoView({behavior:'smooth'})"></button>
+  <button class="page-dot" onclick="document.getElementById('slide3').scrollIntoView({behavior:'smooth'})"></button>
+</div>
+
+<!-- Navigation Buttons -->
+<button class="nav-btn" id="nav-down">
+  <i class="fa-solid fa-chevron-down"></i>
+</button>
+<button class="nav-btn" id="nav-up">
+  <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<script>
+  const slides  = [document.getElementById('slide1'), document.getElementById('slide2'), document.getElementById('slide3')];
+  const dots    = document.querySelectorAll('.page-dot');
+  const btnDown = document.getElementById('nav-down');
+  const btnUp   = document.getElementById('nav-up');
+  let current   = 0;
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = slides.indexOf(e.target);
+        if (idx !== -1) {
+          current = idx;
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          btnUp.style.display   = idx === 0 ? 'none' : 'flex';
+          btnDown.style.display = idx === slides.length - 1 ? 'none' : 'flex';
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  btnDown.addEventListener('click', () => {
+    if (current < slides.length - 1) slides[current + 1].scrollIntoView({ behavior: 'smooth' });
+  });
+  btnUp.addEventListener('click', () => {
+    if (current > 0) slides[current - 1].scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>

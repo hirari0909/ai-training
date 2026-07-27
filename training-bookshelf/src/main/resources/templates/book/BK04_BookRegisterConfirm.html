@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>書籍登録確認 - 書籍管理システム</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; min-height: 100vh; }
+        .navbar { background-color: #1e40af !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .navbar-brand { font-weight: 700; font-size: 1.5rem; letter-spacing: 0.5px; }
+        .breadcrumb { background-color: transparent; padding: 0; margin-bottom: 1.5rem; font-size: 0.95rem; }
+        .breadcrumb-item a { color: #2563eb; text-decoration: none; }
+        .confirm-section { background-color: #ffffff; padding: 2.5rem; border-radius: 0.5rem; margin-bottom: 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+        .confirm-section .info-row { margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid #f1f5f9; }
+        .confirm-section .info-row:last-child { border-bottom: none; }
+        .info-label { font-weight: 700; color: #334155; margin-bottom: 0.75rem; font-size: 0.875rem; }
+        .info-value { color: #1e293b; font-size: 1rem; }
+        .btn { border-radius: 0.375rem; padding: 0.625rem 1.5rem; font-weight: 600; border: none; }
+        .btn-lg { padding: 0.75rem 2rem; font-size: 1rem; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1e40af; color: white; }
+        .btn-secondary { background-color: #64748b; color: white; }
+        .btn-secondary:hover { background-color: #475569; color: white; }
+        .footer { margin-top: 4rem; padding: 2rem 0; background-color: #f8fafc; text-align: center; border-top: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/book/list}"><i class="bi bi-book"></i> 書籍管理システム</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/book/list}"><i class="bi bi-list-ul"></i> 書籍一覧</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/book/create}">書籍登録</a></li>
+                <li class="breadcrumb-item active" aria-current="page">確認</li>
+            </ol>
+        </nav>
+
+        <h4 class="mb-4"><i class="bi bi-check-circle"></i> 入力内容の確認</h4>
+
+        <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+        <div class="confirm-section">
+            <div class="info-row">
+                <div class="info-label">タイトル</div>
+                <div class="info-value" th:text="${form.title}"></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">著者</div>
+                <div class="info-value" th:text="${form.author}"></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">出版社</div>
+                <div class="info-value" th:text="${form.publisher}"></div>
+            </div>
+            <div class="row info-row">
+                <div class="col-md-6">
+                    <div class="info-label">出版日</div>
+                    <div class="info-value" th:text="${form.publishedDate}"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-label">ISBN</div>
+                    <div class="info-value" th:text="${form.isbn}"></div>
+                </div>
+            </div>
+            <div class="row info-row">
+                <div class="col-md-6">
+                    <div class="info-label">カテゴリ</div>
+                    <div class="info-value" th:text="${categoryName}"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-label">価格</div>
+                    <div class="info-value" th:text="${form.price} + '円'"></div>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">概要</div>
+                <div class="info-value" th:text="${form.description}"></div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <form th:action="@{/book/create}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-check-circle-fill"></i> 登録</button>
+            </form>
+            <a th:href="@{/book/create}" class="btn btn-secondary btn-lg ms-2"><i class="bi bi-arrow-left"></i> 戻る</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container"><span class="text-muted">&copy; 2024 Training BookShelf</span></div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

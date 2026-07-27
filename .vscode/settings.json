@@ -1,0 +1,8 @@
+{
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.project.sourcePaths": [
+        "training-bookshelf/src/main/java",
+        "training-bookshelf/src/test/java"
+    ],
+    "java.dependency.syncWithFolderExplorer": false
+}

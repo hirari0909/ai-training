@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TrainingBookshelfApplication<training-bookshelf>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "jp.co.skig.training.bookshelf.TrainingBookshelfApplication",
+            "projectName": "training-bookshelf",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

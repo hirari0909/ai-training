@@ -1,0 +1,15 @@
+{
+  "name": "screencapture",
+  "version": "1.0.0",
+  "main": "screenshot.js",
+  "scripts": {
+    "screenshot": "node screenshot.js",
+    "install-browser": "npx playwright install chromium"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "HTMLモックのスクリーンショットをPlaywright(headless)で撮影してPNG保存するツール",
+  "dependencies": {
+    "playwright": "^1.52.0"
+  }
+}

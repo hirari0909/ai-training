@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 800px;
+        }
+        h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin: 0;
+            animation: fadeIn 1s ease-in;
+        }
+        p {
+            color: #666;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .status {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .status h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #4caf50;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello World!</h1>
+        <p>Welcome to Training Bookshelf Application</p>
+        <p>🎉 Spring Boot is running successfully! 🎉</p>
+        
+        <div class="status">
+            <h2>✅ System Status</h2>
+            <div>
+                <span class="badge">AP Server: Running</span>
+                <span class="badge">Database: Connected</span>
+                <span class="badge">MyBatis: Configured</span>
+            </div>
+            
+            <h3 style="color: #666; margin-top: 20px;">Sample Data from Database:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sample ID</th>
+                        <th>Sample Column 1</th>
+                        <th>Sample Column 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="sample : ${samples}">
+                        <td th:text="${sample.sampleId}"></td>
+                        <td th:text="${sample.sampleColumn1}"></td>
+                        <td th:text="${sample.sampleColumn2}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

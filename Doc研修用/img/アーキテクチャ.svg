@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 560" font-family="Segoe UI, Meiryo, 'Yu Gothic UI', sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrowBack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#cbd5e1"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="700" y="44" text-anchor="middle" font-size="22" font-weight="bold" fill="#334155">▼ アーキテクチャ図（Spring Boot MVC + MyBatis + H2DB）</text>
+
+  <!-- ============== Browser ============== -->
+  <rect x="30" y="200" width="180" height="200" rx="14" fill="#fff7ed" stroke="#f59e0b" stroke-width="2.5"/>
+  <g transform="translate(120,240)" stroke="#7c3aed" stroke-width="2" fill="#a78bfa">
+    <circle cx="0" cy="0" r="14"/>
+    <path d="M-22,40 a22,22 0 0 1 44,0 z"/>
+  </g>
+  <text x="120" y="335" text-anchor="middle" font-size="17" font-weight="bold" fill="#1f2937">利用者</text>
+  <text x="120" y="362" text-anchor="middle" font-size="13" fill="#475569">ブラウザ</text>
+  <text x="120" y="382" text-anchor="middle" font-size="13" fill="#475569">(HTTP/HTML)</text>
+
+  <!-- HTTP arrow -->
+  <line x1="212" y1="295" x2="295" y2="295" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="253" y="287" text-anchor="middle" font-size="13" fill="#64748b">HTTP</text>
+  <line x1="295" y1="315" x2="212" y2="315" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowBack)"/>
+  <text x="253" y="332" text-anchor="middle" font-size="12" fill="#94a3b8">HTML応答</text>
+
+  <!-- ============== Spring Boot Application container ============== -->
+  <rect x="295" y="100" width="850" height="460" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 6"/>
+  <g transform="translate(320,118)">
+    <circle cx="10" cy="10" r="9" fill="#22c55e" stroke="#166534" stroke-width="1.2"/>
+    <path d="M5,10 q5,-7 10,0 q-5,7 -10,0z" fill="#bbf7d0"/>
+  </g>
+  <text x="345" y="136" font-size="16" font-weight="bold" fill="#334155">Spring Boot アプリケーション (MVC)</text>
+
+  <!-- ============== View (Thymeleaf) ============== -->
+  <rect x="320" y="200" width="170" height="200" rx="12" fill="#dcfce7" stroke="#10b981" stroke-width="2.5"/>
+  <g transform="translate(405,240)" fill="#22c55e" stroke="#166534" stroke-width="1.5">
+    <path d="M-12,8 q4,-18 12,-14 q-2,12 -12,14z"/>
+    <path d="M-2,2 q6,-2 10,-12" fill="none" stroke="#166534"/>
+  </g>
+  <text x="405" y="295" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2937">View</text>
+  <text x="405" y="318" text-anchor="middle" font-size="14" fill="#1f2937">Thymeleaf</text>
+  <text x="405" y="350" text-anchor="middle" font-size="12" fill="#475569">画面テンプレート</text>
+  <text x="405" y="370" text-anchor="middle" font-size="12" fill="#475569">(*.html)</text>
+
+  <!-- arrow View <-> Controller -->
+  <line x1="492" y1="290" x2="555" y2="290" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="523" y="282" text-anchor="middle" font-size="12" fill="#64748b">render</text>
+  <line x1="555" y1="310" x2="492" y2="310" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowBack)"/>
+  <text x="523" y="327" text-anchor="middle" font-size="12" fill="#94a3b8">Model</text>
+
+  <!-- ============== Controller ============== -->
+  <rect x="555" y="200" width="170" height="200" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2.5"/>
+  <g transform="translate(640,240)" fill="#3b82f6" stroke="#1e3a8a" stroke-width="1.5">
+    <rect x="-16" y="-12" width="32" height="24" rx="3" fill="#bfdbfe"/>
+    <path d="M-10,-4 h20 M-10,2 h20 M-10,8 h12" stroke="#1e3a8a" fill="none"/>
+  </g>
+  <text x="640" y="295" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2937">Controller</text>
+  <text x="640" y="318" text-anchor="middle" font-size="12" fill="#475569">@Controller</text>
+  <text x="640" y="350" text-anchor="middle" font-size="12" fill="#475569">リクエスト受付</text>
+  <text x="640" y="370" text-anchor="middle" font-size="12" fill="#475569">／画面遷移</text>
+
+  <!-- arrow Controller <-> Service -->
+  <line x1="727" y1="290" x2="790" y2="290" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="758" y="282" text-anchor="middle" font-size="12" fill="#64748b">call</text>
+  <line x1="790" y1="310" x2="727" y2="310" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowBack)"/>
+  <text x="758" y="327" text-anchor="middle" font-size="12" fill="#94a3b8">result</text>
+
+  <!-- ============== Service ============== -->
+  <rect x="790" y="200" width="170" height="200" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5"/>
+  <g transform="translate(875,240)" fill="#a78bfa" stroke="#5b21b6" stroke-width="1.5">
+    <circle cx="0" cy="0" r="14" fill="#ddd6fe"/>
+    <path d="M-7,-3 h14 M-7,3 h14 M-3,-9 v18 M3,-9 v18" stroke="#5b21b6" fill="none"/>
+  </g>
+  <text x="875" y="295" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2937">Service</text>
+  <text x="875" y="318" text-anchor="middle" font-size="12" fill="#475569">@Service</text>
+  <text x="875" y="350" text-anchor="middle" font-size="12" fill="#475569">業務ロジック</text>
+  <text x="875" y="370" text-anchor="middle" font-size="12" fill="#475569">／トランザクション</text>
+
+  <!-- arrow Service <-> Mapper -->
+  <line x1="962" y1="290" x2="1025" y2="290" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="993" y="282" text-anchor="middle" font-size="12" fill="#64748b">SQL実行</text>
+  <line x1="1025" y1="310" x2="962" y2="310" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowBack)"/>
+  <text x="993" y="327" text-anchor="middle" font-size="12" fill="#94a3b8">Entity</text>
+
+  <!-- ============== Mapper ============== -->
+  <rect x="1025" y="200" width="100" height="200" rx="12" fill="#fef9c3" stroke="#eab308" stroke-width="2.5"/>
+  <g transform="translate(1075,240)" fill="#facc15" stroke="#854d0e" stroke-width="1.5">
+    <rect x="-14" y="-10" width="28" height="20" rx="3" fill="#fef08a"/>
+    <path d="M-9,-3 h18 M-9,3 h18" stroke="#854d0e" fill="none"/>
+  </g>
+  <text x="1075" y="295" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">Mapper</text>
+  <text x="1075" y="316" text-anchor="middle" font-size="11" fill="#475569">@Mapper</text>
+  <text x="1075" y="350" text-anchor="middle" font-size="11" fill="#475569">MyBatis</text>
+  <text x="1075" y="368" text-anchor="middle" font-size="11" fill="#475569">(*.xml/IF)</text>
+
+  <!-- ============== Form & Entity (下段) ============== -->
+  <rect x="320" y="430" width="290" height="100" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+  <text x="465" y="455" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">Form</text>
+  <text x="465" y="478" text-anchor="middle" font-size="12" fill="#475569">画面入出力データ</text>
+  <text x="465" y="498" text-anchor="middle" font-size="12" fill="#475569">(BookRegisterForm 等)</text>
+  <text x="465" y="518" text-anchor="middle" font-size="11" fill="#94a3b8">View ⇔ Controller で受け渡し</text>
+
+  <rect x="640" y="430" width="320" height="100" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+  <text x="800" y="455" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2937">Entity</text>
+  <text x="800" y="478" text-anchor="middle" font-size="12" fill="#475569">DBテーブル対応データ</text>
+  <text x="800" y="498" text-anchor="middle" font-size="12" fill="#475569">(Book / Category / Review 等)</text>
+  <text x="800" y="518" text-anchor="middle" font-size="11" fill="#94a3b8">Service ⇔ Mapper で受け渡し</text>
+
+  <!-- 点線で関連付け -->
+  <line x1="405" y1="400" x2="405" y2="430" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="640" y1="400" x2="640" y2="430" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="875" y1="400" x2="875" y2="430" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <line x1="1075" y1="400" x2="1075" y2="430" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+  <!-- arrow Mapper -> H2 DB -->
+  <line x1="1127" y1="295" x2="1200" y2="295" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="1163" y="287" text-anchor="middle" font-size="12" fill="#64748b">JDBC</text>
+  <line x1="1200" y1="315" x2="1127" y2="315" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowBack)"/>
+  <text x="1163" y="332" text-anchor="middle" font-size="12" fill="#94a3b8">ResultSet</text>
+
+  <!-- ============== H2 DB ============== -->
+  <rect x="1200" y="200" width="180" height="200" rx="14" fill="#fce7f3" stroke="#ec4899" stroke-width="2.5"/>
+  <g transform="translate(1290,250)" fill="#f9a8d4" stroke="#9d174d" stroke-width="1.5">
+    <ellipse cx="0" cy="-18" rx="28" ry="8"/>
+    <path d="M-28,-18 v36 a28,8 0 0 0 56,0 v-36" fill="#fbcfe8"/>
+    <path d="M-28,-6 a28,8 0 0 0 56,0" fill="none"/>
+    <path d="M-28,6 a28,8 0 0 0 56,0" fill="none"/>
+  </g>
+  <text x="1290" y="320" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2937">H2 DB</text>
+  <text x="1290" y="345" text-anchor="middle" font-size="13" fill="#475569">インメモリRDB</text>
+  <text x="1290" y="368" text-anchor="middle" font-size="12" fill="#475569">(SQL / 起動時に</text>
+  <text x="1290" y="385" text-anchor="middle" font-size="12" fill="#475569">スキーマ初期化)</text>
+
+</svg>

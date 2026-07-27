@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 240" font-family="'Yu Gothic UI', 'Meiryo', sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+  </defs>
+
+  <!-- Verification section -->
+  <rect x="40" y="20" width="1020" height="200" rx="14" ry="14" fill="#fafafa" stroke="#455a64" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="60" y="55" font-size="18" font-weight="bold" fill="#37474f">④ 資材確認 ＆ 動作確認</text>
+
+  <!-- Code trace -->
+  <rect x="60" y="75" width="600" height="125" rx="10" ry="10" fill="#ffffff" stroke="#607d8b" stroke-width="1.5"/>
+  <text x="75" y="102" font-size="13" font-weight="bold" fill="#37474f">コードトレース（設計書を見ながら追う）</text>
+
+  <!-- Trace flow chips -->
+  <g font-size="11" font-weight="bold">
+    <rect x="75" y="125" width="90" height="34" rx="17" ry="17" fill="#e1f5fe" stroke="#0277bd"/>
+    <text x="120" y="147" text-anchor="middle" fill="#01579b">Controller</text>
+    <line x1="165" y1="142" x2="185" y2="142" stroke="#37474f" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="185" y="125" width="80" height="34" rx="17" ry="17" fill="#e1f5fe" stroke="#0277bd"/>
+    <text x="225" y="147" text-anchor="middle" fill="#01579b">Service</text>
+    <line x1="265" y1="142" x2="285" y2="142" stroke="#37474f" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="285" y="125" width="80" height="34" rx="17" ry="17" fill="#e1f5fe" stroke="#0277bd"/>
+    <text x="325" y="147" text-anchor="middle" fill="#01579b">Mapper</text>
+    <line x1="365" y1="142" x2="385" y2="142" stroke="#37474f" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="385" y="125" width="80" height="34" rx="17" ry="17" fill="#e1f5fe" stroke="#0277bd"/>
+    <text x="425" y="147" text-anchor="middle" fill="#01579b">Entity</text>
+    <line x1="465" y1="142" x2="485" y2="142" stroke="#37474f" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="485" y="125" width="70" height="34" rx="17" ry="17" fill="#e1f5fe" stroke="#0277bd"/>
+    <text x="520" y="147" text-anchor="middle" fill="#01579b">HTML</text>
+  </g>
+  <text x="75" y="185" font-size="11" fill="#546e7a">※ src 配下に正しく格納されているか、設計書と突き合わせて確認</text>
+
+  <!-- Browser & DB check -->
+  <rect x="680" y="75" width="370" height="125" rx="10" ry="10" fill="#ffffff" stroke="#607d8b" stroke-width="1.5"/>
+  <text x="695" y="102" font-size="13" font-weight="bold" fill="#37474f">動作確認</text>
+  <text x="695" y="128" font-size="12" fill="#37474f">🌐 ブラウザ：画面遷移図に従って画面確認</text>
+  <text x="695" y="152" font-size="12" fill="#37474f">🗄 H2 Console：DBの中身を確認</text>
+  <text x="695" y="185" font-size="11" fill="#546e7a">※ 画面 → DB の流れで正しく動くかチェック</text>
+</svg>

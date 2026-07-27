@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="jp.co.skig.training.bookshelf.mapper.BookMapper">
+
+  <select id="findAll" resultType="jp.co.skig.training.bookshelf.entity.Book">
+    SELECT
+      b.book_id, b.title, b.author, b.publisher, b.published_date,
+      b.isbn, b.category_id, b.price, b.description,
+      b.created_at, b.updated_at,
+      c.category_name,
+      COALESCE(AVG(r.rating), 0) AS avg_rating,
+      COUNT(r.review_id) AS review_count
+    FROM books b
+    INNER JOIN categories c ON b.category_id = c.category_id
+    LEFT JOIN reviews r ON b.book_id = r.book_id
+    <where>
+      <if test="searchTitle != null and searchTitle != ''">
+        AND b.title LIKE CONCAT('%', #{searchTitle}, '%')
+      </if>
+      <if test="searchAuthor != null and searchAuthor != ''">
+        AND b.author LIKE CONCAT('%', #{searchAuthor}, '%')
+      </if>
+      <if test="searchCategoryId != null">
+        AND b.category_id = #{searchCategoryId}
+      </if>
+    </where>
+    GROUP BY b.book_id, b.title, b.author, b.publisher, b.published_date,
+             b.isbn, b.category_id, b.price, b.description,
+             b.created_at, b.updated_at, c.category_name
+    <choose>
+      <when test="sortColumn == 'title'">
+        ORDER BY b.title ${sortOrder}
+      </when>
+      <when test="sortColumn == 'author'">
+        ORDER BY b.author ${sortOrder}
+      </when>
+      <when test="sortColumn == 'categoryName'">
+        ORDER BY c.category_name ${sortOrder}
+      </when>
+      <when test="sortColumn == 'publishedDate'">
+        ORDER BY b.published_date ${sortOrder}
+      </when>
+      <when test="sortColumn == 'avgRating'">
+        ORDER BY avg_rating ${sortOrder}
+      </when>
+      <when test="sortColumn == 'reviewCount'">
+        ORDER BY review_count ${sortOrder}
+      </when>
+      <otherwise>
+        ORDER BY b.book_id DESC
+      </otherwise>
+    </choose>
+    LIMIT #{limit} OFFSET #{offset}
+  </select>
+
+  <select id="count" resultType="int">
+    SELECT COUNT(*)
+    FROM books b
+    <where>
+      <if test="searchTitle != null and searchTitle != ''">
+        AND b.title LIKE CONCAT('%', #{searchTitle}, '%')
+      </if>
+      <if test="searchAuthor != null and searchAuthor != ''">
+        AND b.author LIKE CONCAT('%', #{searchAuthor}, '%')
+      </if>
+      <if test="searchCategoryId != null">
+        AND b.category_id = #{searchCategoryId}
+      </if>
+    </where>
+  </select>
+
+</mapper>

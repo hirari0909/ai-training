@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 330" font-family="'Yu Gothic UI', 'Meiryo', sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37474f"/>
+    </marker>
+    <marker id="arrowLoop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6a1b9a"/>
+    </marker>
+    <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e3f2fd"/>
+      <stop offset="100%" stop-color="#90caf9"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e1f5fe"/>
+      <stop offset="100%" stop-color="#81d4fa"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff8e1"/>
+      <stop offset="100%" stop-color="#ffd54f"/>
+    </linearGradient>
+    <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8f5e9"/>
+      <stop offset="100%" stop-color="#81c784"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="550" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#37474f">機能追加・改善 作業フロー（合否判定 ＋ 繰り返し）</text>
+
+  <!-- Box 1: 影響調査 -->
+  <rect x="20" y="50" width="240" height="200" rx="14" ry="14" fill="url(#g1)" stroke="#1565c0" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="50" cy="80" r="18" fill="#0d47a1"/>
+  <text x="50" y="86" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">①</text>
+  <text x="80" y="86" font-size="15" font-weight="bold" fill="#0d47a1">影響調査</text>
+  <line x1="35" y1="105" x2="245" y2="105" stroke="#1565c0" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="35" y="124" font-size="11" font-weight="bold" fill="#0d47a1">📁 Docsシステム/外部設計/</text>
+  <text x="35" y="142" font-size="11" fill="#1565c0">　から修正対象を抽出</text>
+  <text x="35" y="162" font-size="11" fill="#1565c0">・画面 / 項目 / DB / 遷移を洗い出し</text>
+  <text x="35" y="180" font-size="11" fill="#1565c0">・修正方針 / 影響範囲を提示</text>
+  <text x="35" y="206" font-size="11" font-weight="bold" fill="#0d47a1">🤖 GitHub Copilot</text>
+  <rect x="35" y="218" width="210" height="24" rx="12" ry="12" fill="#ffffff" stroke="#d84315" stroke-width="1.5"/>
+  <text x="140" y="234" text-anchor="middle" font-size="11" font-weight="bold" fill="#d84315">✋ 合否判定（人間レビュー）</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="262" y1="150" x2="298" y2="150" stroke="#37474f" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Box 2: 設計書修正 -->
+  <rect x="300" y="50" width="240" height="200" rx="14" ry="14" fill="url(#g2)" stroke="#0277bd" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="330" cy="80" r="18" fill="#01579b"/>
+  <text x="330" y="86" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">②</text>
+  <text x="360" y="86" font-size="15" font-weight="bold" fill="#01579b">設計書修正</text>
+  <line x1="315" y1="105" x2="525" y2="105" stroke="#0277bd" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="315" y="124" font-size="11" font-weight="bold" fill="#01579b">📁 Docsシステム/外部設計/</text>
+  <text x="315" y="142" font-size="11" fill="#0277bd">　md / html / img を更新</text>
+  <text x="315" y="162" font-size="11" fill="#0277bd">・画面MockHTML を差し替え</text>
+  <text x="315" y="180" font-size="11" fill="#0277bd">・項目定義 / DB設計 / 画面遷移</text>
+  <text x="315" y="206" font-size="11" font-weight="bold" fill="#01579b">🤖 GitHub Copilot</text>
+  <rect x="315" y="218" width="210" height="24" rx="12" ry="12" fill="#ffffff" stroke="#d84315" stroke-width="1.5"/>
+  <text x="420" y="234" text-anchor="middle" font-size="11" font-weight="bold" fill="#d84315">✋ 合否判定（人間レビュー）</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="542" y1="150" x2="578" y2="150" stroke="#37474f" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Box 3: コーディング・UT -->
+  <rect x="580" y="50" width="240" height="200" rx="14" ry="14" fill="url(#g3)" stroke="#ef6c00" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="610" cy="80" r="18" fill="#bf360c"/>
+  <text x="610" y="86" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">③</text>
+  <text x="640" y="86" font-size="15" font-weight="bold" fill="#e65100">コーディング・UT</text>
+  <line x1="595" y1="105" x2="805" y2="105" stroke="#ef6c00" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="595" y="124" font-size="11" font-weight="bold" fill="#bf360c">📄 CD_Executor.md / CD_ルール.md</text>
+  <text x="595" y="142" font-size="11" font-weight="bold" fill="#bf360c">📄 単体テスト_Executor.md</text>
+  <text x="595" y="162" font-size="11" fill="#bf360c">・ソース / テストコード生成</text>
+  <text x="595" y="180" font-size="11" fill="#bf360c">・mvn test ＋ JaCoCo レポート</text>
+  <text x="595" y="206" font-size="11" font-weight="bold" fill="#bf360c">🤖 GitHub Copilot</text>
+  <rect x="595" y="218" width="210" height="24" rx="12" ry="12" fill="#ffffff" stroke="#d84315" stroke-width="1.5"/>
+  <text x="700" y="234" text-anchor="middle" font-size="11" font-weight="bold" fill="#d84315">✋ 合否判定（人間レビュー）</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="822" y1="150" x2="858" y2="150" stroke="#37474f" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Box 4: 動作確認 -->
+  <rect x="860" y="50" width="220" height="200" rx="14" ry="14" fill="url(#g4)" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+  <circle cx="890" cy="80" r="18" fill="#1b5e20"/>
+  <text x="890" y="86" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">④</text>
+  <text x="920" y="86" font-size="15" font-weight="bold" fill="#1b5e20">動作確認</text>
+  <line x1="875" y1="105" x2="1065" y2="105" stroke="#2e7d32" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="875" y="124" font-size="11" font-weight="bold" fill="#1b5e20">手動でブラウザ操作</text>
+  <text x="875" y="142" font-size="11" fill="#1b5e20">・画面遷移 / バリデーション</text>
+  <text x="875" y="160" font-size="11" fill="#1b5e20">・登録 / 更新 / 削除</text>
+  <text x="875" y="178" font-size="11" fill="#1b5e20">・H2 Console で DB 確認</text>
+  <text x="875" y="206" font-size="11" font-weight="bold" fill="#1b5e20">👤 確認者：人間</text>
+  <rect x="875" y="218" width="190" height="24" rx="12" ry="12" fill="#ffffff" stroke="#1b5e20" stroke-width="1.5"/>
+  <text x="970" y="234" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b5e20">🎉 完成 or 課題抽出</text>
+
+  <!-- Loopback arrow: 繰り返し -->
+  <path d="M 970 252 V 295 H 140 V 252" fill="none" stroke="#6a1b9a" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrowLoop)"/>
+  <rect x="475" y="282" width="160" height="26" rx="13" ry="13" fill="#ffffff" stroke="#6a1b9a" stroke-width="1.5"/>
+  <text x="555" y="300" text-anchor="middle" font-size="12" font-weight="bold" fill="#6a1b9a">🔁 課題があれば繰り返し</text>
+</svg>

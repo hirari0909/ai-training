@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI支援型開発研修 カリキュラム詳細</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a2332;
+    background: #f0f4f8;
+  }
+
+  /* ===== LAYOUT ===== */
+  .page-wrapper {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,.10);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* ===== HEADER ===== */
+  .doc-header {
+    background: linear-gradient(135deg, #1a3a6e 0%, #2563b0 100%);
+    color: #fff;
+    padding: 48px 48px 40px;
+    position: relative;
+  }
+  .doc-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #fbbf24, #f97316, #fbbf24);
+  }
+  .doc-header .label {
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #93c5fd;
+    margin-bottom: 10px;
+  }
+  .doc-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin-bottom: 12px;
+  }
+  .doc-header .meta {
+    font-size: 13px;
+    color: #bfdbfe;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ===== CONTENT ===== */
+  .doc-body {
+    padding: 48px;
+  }
+
+  /* ===== HEADINGS ===== */
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1a3a6e;
+    border-left: 5px solid #2563b0;
+    padding-left: 14px;
+    margin: 40px 0 16px;
+  }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e4a8a;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed #bfdbfe;
+    margin: 28px 0 12px;
+  }
+  h4 {
+    font-size: .95rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 20px 0 8px;
+  }
+
+  /* ===== PARAGRAPH ===== */
+  p { margin-bottom: 16px; color: #374151; }
+
+  /* ===== TABLE ===== */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.08);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .95rem;
+  }
+  thead tr {
+    background: #1a3a6e;
+    color: #fff;
+  }
+  thead th {
+    padding: 13px 16px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  tbody tr:nth-child(even) { background: #eff6ff; }
+  tbody tr:hover { background: #dbeafe; }
+  tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #374151;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-weight: 600;
+  }
+  .badge-blue   { background: #dbeafe; color: #1e40af; }
+  .badge-green  { background: #d1fae5; color: #065f46; }
+  .badge-yellow { background: #fef3c7; color: #92400e; }
+  .badge-red    { background: #fee2e2; color: #991b1b; }
+  .badge-purple { background: #ede9fe; color: #5b21b6; }
+  .badge-gray   { background: #f3f4f6; color: #374151; }
+
+  /* ===== BLOCKQUOTE ===== */
+  blockquote {
+    margin: 24px 0;
+    padding: 20px 24px;
+    background: #eff6ff;
+    border-left: 5px solid #2563b0;
+    border-radius: 0 8px 8px 0;
+    color: #1e4a8a;
+    font-style: italic;
+    font-size: 1.02rem;
+    position: relative;
+  }
+  blockquote::before {
+    content: '\201C';
+    font-size: 3.5rem;
+    color: #bfdbfe;
+    position: absolute;
+    top: -4px;
+    left: 10px;
+    line-height: 1;
+    font-style: normal;
+  }
+  blockquote p { margin: 0; color: #1e4a8a; padding-left: 28px; }
+  blockquote cite {
+    display: block;
+    margin-top: 8px;
+    font-size: .85rem;
+    color: #6b7280;
+    font-style: normal;
+    padding-left: 28px;
+  }
+
+  /* ===== LISTS ===== */
+  ul, ol {
+    margin: 16px 0 16px 8px;
+    padding-left: 20px;
+    color: #374151;
+  }
+  li { margin-bottom: 8px; }
+  ul li::marker { color: #2563b0; }
+
+  /* check list */
+  .checklist { list-style: none; padding-left: 4px; }
+  .checklist li {
+    padding-left: 28px;
+    position: relative;
+  }
+  .checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #059669;
+    font-weight: 700;
+  }
+
+  /* ===== CALLOUT ===== */
+  .callout {
+    display: flex;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: .95rem;
+  }
+  .callout-info  { background: #eff6ff; border: 1px solid #93c5fd; }
+  .callout-warn  { background: #fffbeb; border: 1px solid #fcd34d; }
+  .callout-tip   { background: #ecfdf5; border: 1px solid #6ee7b7; }
+  .callout-icon  { font-size: 1.2rem; flex-shrink: 0; }
+
+  /* ===== CODE / TREE ===== */
+  .code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0 24px;
+    font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+    font-size: .88rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .comment { color: #64748b; }
+  .code-block .folder  { color: #60a5fa; }
+  .code-block .file    { color: #a5f3fc; }
+  .code-block .desc    { color: #94a3b8; }
+
+  /* ===== TIME BADGE ===== */
+  .time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #1a3a6e, #2563b0);
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  /* ===== STEP CARD ===== */
+  .step-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    position: relative;
+  }
+  .step-card::before {
+    content: attr(data-step);
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: #2563b0;
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+    padding: 2px 12px;
+    border-radius: 12px;
+    letter-spacing: .05em;
+  }
+  .step-card h4 { margin-top: 4px; }
+
+  /* ===== DIAGRAM (構成イメージ図スタイル) ===== */
+  .diagram {
+    margin: 20px 0;
+    padding: 28px 20px 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+  }
+  .diagram-title {
+    text-align: center;
+    font-size: .85rem;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: .08em;
+    margin-bottom: 20px;
+  }
+  .diagram-flow {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: nowrap;
+  }
+  .dia-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 14px 16px;
+    border-radius: 10px;
+    min-width: 120px;
+    position: relative;
+    border: 2px solid;
+  }
+  .dia-node .dia-icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .dia-node .dia-label { font-size: .82rem; font-weight: 700; line-height: 1.3; }
+  .dia-node .dia-sub { font-size: .72rem; color: #6b7280; margin-top: 3px; line-height: 1.3; }
+  .dia-user    { background: #fef3c7; border-color: #f59e0b; }
+  .dia-browser { background: #e0f2fe; border-color: #0ea5e9; }
+  .dia-cloud   { background: #ede9fe; border-color: #8b5cf6; min-width: 200px; }
+  .dia-ext     { background: #ecfdf5; border-color: #10b981; }
+  .dia-ai      { background: #fce7f3; border-color: #ec4899; }
+  .dia-input   { background: #ecfdf5; border-color: #10b981; }
+  .dia-output  { background: #fef3c7; border-color: #f59e0b; }
+  .dia-process { background: #ede9fe; border-color: #8b5cf6; }
+  .dia-step    { background: #e0f2fe; border-color: #0ea5e9; }
+
+  .dia-inner {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .dia-chip {
+    font-size: .68rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.7);
+    border: 1px solid rgba(0,0,0,.1);
+    color: #374151;
+    white-space: nowrap;
+  }
+
+  .dia-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    flex-shrink: 0;
+    min-width: 48px;
+  }
+  .dia-arrow .arrow-line {
+    font-size: 1.3rem;
+    color: #94a3b8;
+    letter-spacing: -3px;
+    line-height: 1;
+  }
+  .dia-arrow .arrow-text {
+    font-size: .65rem;
+    color: #9ca3af;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .dia-group {
+    border: 2px dashed #94a3b8;
+    border-radius: 12px;
+    padding: 10px 8px 8px;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .dia-group-label {
+    position: absolute;
+    top: -10px;
+    left: 14px;
+    background: #f8fafc;
+    padding: 0 8px;
+    font-size: .7rem;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: .05em;
+  }
+
+  /* 循環矢印 */
+  .dia-loop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    flex-shrink: 0;
+    min-width: 40px;
+    font-size: 1.4rem;
+    color: #94a3b8;
+  }
+
+  /* ===== THEME CARD ===== */
+  .theme-card {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .theme-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2563b0, #60a5fa);
+  }
+  .theme-card.example::before {
+    background: linear-gradient(90deg, #059669, #34d399);
+  }
+  .theme-card .theme-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .theme-card .theme-header h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #1a3a6e;
+  }
+  .difficulty {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 12px;
+  }
+  .difficulty-2 { background: #d1fae5; color: #065f46; }
+  .difficulty-3 { background: #fef3c7; color: #92400e; }
+  .difficulty-4 { background: #fee2e2; color: #991b1b; }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-divider {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #bfdbfe, transparent);
+    margin: 36px 0;
+  }
+
+  /* ===== FOOTER ===== */
+  .doc-footer {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .82rem;
+    color: #9ca3af;
+  }
+
+  /* ===== PAGE BREAK INDICATOR ===== */
+  .page-break {
+    position: relative;
+    height: 32px;
+    margin: 32px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .page-break::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    border-top: 2px dashed #cbd5e1;
+  }
+  .page-break::after {
+    content: '✂ 改ページ';
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    padding: 2px 16px;
+    font-size: .78rem;
+    color: #94a3b8;
+    letter-spacing: .08em;
+    border-radius: 4px;
+  }
+
+  /* ===== FLOATING TOC ===== */
+  .toc-float {
+    position: fixed;
+    top: 40px;
+    right: 24px;
+    width: 260px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    padding: 20px 16px;
+    z-index: 1000;
+    font-size: .82rem;
+    line-height: 1.5;
+    transition: opacity .2s;
+  }
+  .toc-float .toc-title {
+    font-size: .75rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .toc-float ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .toc-float li { margin-bottom: 2px; }
+  .toc-float a {
+    display: block;
+    padding: 4px 8px;
+    color: #64748b;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all .15s;
+    border-left: 2px solid transparent;
+  }
+  .toc-float a:hover {
+    color: #1e40af;
+    background: #eff6ff;
+  }
+  .toc-float a.active {
+    color: #1e40af;
+    background: #eff6ff;
+    border-left-color: #2563b0;
+    font-weight: 600;
+  }
+  .toc-float .toc-h3 {
+    padding-left: 20px;
+    font-size: .78rem;
+  }
+  /* scrollbar */
+  .toc-float::-webkit-scrollbar { width: 4px; }
+  .toc-float::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+  @media (max-width: 1340px) {
+    .toc-float { display: none; }
+  }
+
+  /* =========================================================
+     PRINT CSS
+     ========================================================= */
+  @media print {
+    @page {
+      size: A4;
+      margin: 15mm;
+    }
+
+    body {
+      background: #fff;
+      font-size: 14px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      color-adjust: exact;
+    }
+
+    .page-wrapper {
+      max-width: 100%;
+      margin: 0;
+      box-shadow: none;
+      border-radius: 0;
+    }
+
+    .doc-body { padding: 24px 0; }
+
+    /* 改ページ制御 */
+    h2, h3, h4 {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    h2 + *, h3 + *, h4 + * {
+      break-before: avoid;
+      page-break-before: avoid;
+    }
+
+    tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .step-card, .theme-card, .callout, .code-block, blockquote, .diagram {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* テーブルヘッダー繰り返し */
+    thead { display: table-header-group; }
+    tfoot  { display: table-footer-group; }
+
+    /* 強制改ページ */
+    .page-break {
+      break-before: page;
+      page-break-before: always;
+      height: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    .page-break::before,
+    .page-break::after {
+      display: none;
+    }
+
+    .toc-float { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="doc-header">
+    <div class="label">Training Curriculum &nbsp;|&nbsp; AI支援型開発研修</div>
+    <h1>カリキュラム詳細</h1>
+    <div class="meta">
+      <span>&#x1F4C5; 2025年度 AI支援型開発研修</span>
+      <span>&#x1F464; 対象：全参加者</span>
+      <span>&#x1F3E2; SKI Group</span>
+    </div>
+  </div>
+
+  <!-- 本文 -->
+  <div class="doc-body">
+
+    <!-- ============================================================
+         1. 研修の目的とゴールの説明
+         ============================================================ -->
+    <h2 id="sec-1">1. 研修の目的とゴールの説明</h2>
+    <div class="time-badge">&#x1F552; 9:00 – 9:30</div>
+    <p>本日の研修のゴールを説明する。スライドにて概要を共有。</p>
+
+    <h3 id="sec-1-1">1-1. 背景（Why?）</h3>
+
+    <h4>&#x1F310; 昨今の市場変化</h4>
+    <ul>
+      <li>AIが<strong style="color:#1e40af;">単なるチャットからエージェント型の開発支援ツール</strong>へ進化</li>
+      <li>AI支援型開発の事例が急速に増加（GitHub Copilot / Cline / Cursor 等の台頭）</li>
+    </ul>
+
+    <h4>&#x1F4AC; エンドユーザー・顧客からの声</h4>
+    <ul>
+      <li>AIを活用して<strong style="color:#059669;">生産性・品質を向上</strong>させたい</li>
+      <li>AIを活用してよりスピーディ（短い）な開発サイクルを実現したい</li>
+      <li>AIを自社サービスに組み込み<strong style="color:#059669;">問題解決</strong>（収益構造・人手不足の対策）を図りたい
+        <ul>
+          <li>コールセンター無人化（SMBC事例）</li>
+          <li>SKI-AI面接官</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4>&#x1F680; SKIにて動いている案件</h4>
+    <p>案件一覧資料を用いて説明 — 想定以上にAI関連案件が稼働していることを共有する。</p>
+
+    <h3 id="sec-1-2">1-2. 我々が守りたい立ち位置</h3>
+
+    <div class="callout callout-tip">
+      <span class="callout-icon">&#x2705;</span>
+      <span><strong>OK：</strong>顧客と伴走し、AI時代も顧客の課題解決にコミットする存在であり続けたい</span>
+    </div>
+    <div class="callout callout-warn">
+      <span class="callout-icon">&#x26A0;&#xFE0F;</span>
+      <span><strong>NG：</strong>顧客からの相談事に乗れない（「この問題はAIで解決できますね」の流れに乗れない）</span>
+    </div>
+    <div class="callout callout-warn">
+      <span class="callout-icon">&#x26A0;&#xFE0F;</span>
+      <span><strong>NG：</strong>顧客にAI標準化プロセスが提供されるまで無関心（「何をすればいいですか？」の悪い下請けスタンス）</span>
+    </div>
+
+    <blockquote>
+      <p>近い将来（今年・来年）にAIを活用した開発が当たり前の世界が来ると予想される中で、顧客は業務・システム・設計・実作業を抑えている我々に対して相談が来ると予想される。</p>
+    </blockquote>
+
+    <h3 id="sec-1-3">1-3. 本日のゴール</h3>
+    <ul class="checklist">
+      <li>AI支援型開発時代のSE作業を体験し、AIを活用した開発のイメージを掴むこと。<span class="badge badge-blue">SEに戻る1日!</span></li>
+      <li>参加者全員にVS Codeを使って全カリキュラムを消化してもらう</li>
+      <li>明日顧客からAIを活用した開発の相談が来たときに、どのように対応すればいいかのイメージを持つこと</li>
+    </ul>
+
+    <p>&#x1F4CB; <strong>本日の時間割り</strong> — 作成済みのカリキュラム詳細スライドにて説明する。</p>
+
+    <div class="page-break"></div>
+
+    <!-- ============================================================
+         2. 環境確認
+         ============================================================ -->
+    <h2 id="sec-2">2. 環境確認</h2>
+    <div class="time-badge">&#x1F552; 9:30 – 10:00</div>
+
+    <h3 id="sec-2-1">2-1. 全体構成</h3>
+    <p>何を動かそうとしているのかを理解する。</p>
+    <div class="diagram">
+      <div class="diagram-title">&#x25BC; 構成イメージ図</div>
+      <div class="diagram-flow">
+        <!-- 受講者 -->
+        <div class="dia-node dia-user">
+          <span class="dia-icon">&#x1F464;</span>
+          <span class="dia-label">受講者 / 講師</span>
+          <span class="dia-sub">PC（ブラウザのみ）</span>
+        </div>
+        <div class="dia-arrow">
+          <span class="arrow-line">&#x2500;&#x2500;&#x2500;&#x25B6;</span>
+          <span class="arrow-text">HTTPS</span>
+        </div>
+        <!-- クラウド側グループ -->
+        <div class="dia-group">
+          <div class="dia-group-label">&#x2601;&#xFE0F; GitHub Codespaces（クラウド）</div>
+          <!-- VS Code -->
+          <div class="dia-node dia-cloud">
+            <span class="dia-icon">&#x1F4BB;</span>
+            <span class="dia-label">VS Code<br><small style="font-weight:400;">仮想開発環境</small></span>
+            <div class="dia-inner">
+              <span class="dia-chip">&#x2615; Spring Boot</span>
+              <span class="dia-chip">&#x1F5C4;&#xFE0F; H2 DB</span>
+              <span class="dia-chip">&#x1F33F; Thymeleaf</span>
+            </div>
+          </div>
+          <div class="dia-arrow">
+            <span class="arrow-line">&#x2500;&#x2500;&#x2500;&#x25B6;</span>
+            <span class="arrow-text">拡張機能</span>
+          </div>
+          <!-- Cline -->
+          <div class="dia-node dia-ext">
+            <span class="dia-icon">&#x1F916;</span>
+            <span class="dia-label">Cline</span>
+            <span class="dia-sub">VS Code Extension<br>AIエージェント</span>
+          </div>
+        </div>
+        <div class="dia-arrow">
+          <span class="arrow-line">&#x2500;&#x2500;&#x2500;&#x25B6;</span>
+          <span class="arrow-text">API Call</span>
+        </div>
+        <!-- AWS Bedrock -->
+        <div class="dia-node dia-ai">
+          <span class="dia-icon">&#x1F9E0;</span>
+          <span class="dia-label">AWS Bedrock</span>
+          <span class="dia-sub">Claude Sonnet 4.5<br>生成AI</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 id="sec-2-2">2-2. 確認手順</h3>
+    <ol>
+      <li>ChromeでGitHub Codespacesに接続</li>
+      <li>VS Codeの起動</li>
+      <li>Clineの起動
+        <ul>
+          <li>「<strong>Hello, Claude!</strong>」と話しかけてみる</li>
+          <li>ファイルを何か書かせるお題を実行</li>
+        </ul>
+      </li>
+      <li>ApplicationServer起動</li>
+      <li>ブラウザで画面表示確認</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <!-- ============================================================
+         3. 資材説明
+         ============================================================ -->
+    <h2 id="sec-3">3. 資材説明</h2>
+    <div class="time-badge">&#x1F552; 10:00 – 10:30</div>
+
+    <h3 id="sec-3-1">3-1. システムの説明（設計書を通して）</h3>
+    <p>構築対象のシステムの説明を設計書ベースで行う。</p>
+    <ul>
+      <li>画面遷移図</li>
+      <li>画面一覧</li>
+      <li>画面の機能説明</li>
+      <li>ER図・テーブル定義</li>
+    </ul>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <span><strong>ハンズオンゴール：</strong>現状は設計書と簡易な詳細設計書だけが存在している。ここから<strong style="color:#1e40af;">CD/UTアップ・機能追加まで</strong>を1日で仕上げる。</span>
+    </div>
+
+    <h3 id="sec-3-2">3-2. CDの成果物</h3>
+    <p>SpringBootの基本構造を説明する。HTML / Controller / Service / Mapper / Entity / Form の関係性を共有。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>レイヤー</th>
+            <th>役割</th>
+            <th>技術</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Controller</strong></td>
+            <td>画面制御</td>
+            <td><span class="badge badge-green">Spring MVC</span></td>
+          </tr>
+          <tr>
+            <td><strong>Service</strong></td>
+            <td>業務ロジック</td>
+            <td><span class="badge badge-green">Spring</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mapper</strong></td>
+            <td>DB操作</td>
+            <td><span class="badge badge-blue">MyBatis</span></td>
+          </tr>
+          <tr>
+            <td><strong>Entity</strong></td>
+            <td>データモデル</td>
+            <td><span class="badge badge-gray">POJO</span></td>
+          </tr>
+          <tr>
+            <td><strong>Form</strong></td>
+            <td>画面入力フォーム</td>
+            <td><span class="badge badge-gray">POJO</span></td>
+          </tr>
+          <tr>
+            <td><strong>HTML</strong></td>
+            <td>画面テンプレート</td>
+            <td><span class="badge badge-purple">Thymeleaf</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>&#x1F4C2; プロジェクト構造（src/main）</h4>
+    <div class="code-block"><span class="folder">src/main/</span>
+├── <span class="folder">java/jp/co/skig/training/bookshelf/</span>
+│   ├── <span class="folder">controller/</span>          <span class="desc">… 画面制御</span>
+│   │   ├── <span class="file">BookListController.java</span>        <span class="desc">（書籍一覧）</span>
+│   │   ├── <span class="file">BookDetailController.java</span>      <span class="desc">（書籍詳細）</span>
+│   │   ├── <span class="file">BookRegisterController.java</span>    <span class="desc">（書籍登録）</span>
+│   │   └── ...
+│   ├── <span class="folder">service/</span>             <span class="desc">… 業務ロジック</span>
+│   │   ├── <span class="file">BookService.java</span>               <span class="desc">（書籍サービス）</span>
+│   │   ├── <span class="file">CategoryService.java</span>           <span class="desc">（カテゴリサービス）</span>
+│   │   └── ...
+│   ├── <span class="folder">mapper/</span>              <span class="desc">… DB操作（MyBatis）</span>
+│   │   ├── <span class="file">BookMapper.java</span>                <span class="desc">（書籍マッパー）</span>
+│   │   ├── <span class="file">CategoryMapper.java</span>            <span class="desc">（カテゴリマッパー）</span>
+│   │   └── ...
+│   ├── <span class="folder">entity/</span>              <span class="desc">… データモデル</span>
+│   │   ├── <span class="file">Book.java</span>                      <span class="desc">（書籍エンティティ）</span>
+│   │   ├── <span class="file">Category.java</span>                  <span class="desc">（カテゴリエンティティ）</span>
+│   │   ├── <span class="file">Review.java</span>                    <span class="desc">（レビューエンティティ）</span>
+│   │   └── ...
+│   ├── <span class="folder">form/</span>                <span class="desc">… 画面入力フォーム</span>
+│   │   ├── <span class="file">BookRegisterForm.java</span>          <span class="desc">（書籍登録フォーム）</span>
+│   │   ├── <span class="file">BookEditForm.java</span>              <span class="desc">（書籍編集フォーム）</span>
+│   │   └── ...
+│   └── <span class="folder">util/</span>                <span class="desc">… ユーティリティ</span>
+└── <span class="folder">resources/</span>
+    ├── <span class="folder">templates/book/</span>      <span class="desc">… 画面テンプレート（Thymeleaf）</span>
+    │   ├── <span class="file">BK01_BookList.html</span>             <span class="desc">（書籍一覧画面）</span>
+    │   ├── <span class="file">BK02_BookDetail.html</span>           <span class="desc">（書籍詳細画面）</span>
+    │   ├── <span class="file">BK03〜05_BookRegister*.html</span>    <span class="desc">（書籍登録 入力/確認/完了）</span>
+    │   └── ...
+    ├── <span class="folder">mapper/</span>              <span class="desc">… SQLマッピングXML</span>
+    ├── <span class="folder">static/css/</span>          <span class="desc">… スタイルシート</span>
+    ├── <span class="file">schema.sql</span>           <span class="desc">… テーブル定義</span>
+    └── <span class="file">data.sql</span>             <span class="desc">… 初期データ</span></div>
+
+    <h4>&#x1F9EA; UTの成果物（src/test）</h4>
+    <div class="code-block"><span class="folder">src/test/</span>                        <span class="desc">… 単体テストコード</span>
+└── <span class="folder">java/jp/co/skig/training/bookshelf/</span>
+    ├── <span class="folder">controller/</span>          <span class="desc">… Controllerテスト</span>
+    │   ├── <span class="file">BookListControllerTest.java</span>    <span class="desc">（書籍一覧テスト）</span>
+    │   ├── <span class="file">BookDetailControllerTest.java</span>  <span class="desc">（書籍詳細テスト）</span>
+    │   ├── <span class="file">BookRegisterControllerTest.java</span><span class="desc">（書籍登録テスト）</span>
+    │   └── ...
+    ├── <span class="folder">service/</span>             <span class="desc">… Serviceテスト</span>
+    │   ├── <span class="file">BookServiceTest.java</span>           <span class="desc">（書籍サービステスト）</span>
+    │   ├── <span class="file">CategoryServiceTest.java</span>       <span class="desc">（カテゴリサービステスト）</span>
+    │   ├── <span class="file">ReviewServiceTest.java</span>         <span class="desc">（レビューサービステスト）</span>
+    │   └── ...
+    └── <span class="folder">util/</span>                <span class="desc">… ユーティリティテスト</span>
+        └── <span class="file">MessageUtilTest.java</span>           <span class="desc">（メッセージユーティリティテスト）</span>
+
+<span class="folder">docs/単体テスト/</span>                 <span class="desc">… 単体テスト関連ドキュメント</span>
+├── <span class="folder">仕様書/</span>                  <span class="desc">… テスト仕様書（テストケース定義）</span>
+│   ├── <span class="folder">controller/</span>
+│   │   ├── <span class="file">ReviewController_UT.md</span>         <span class="desc">（レビューController テスト仕様）</span>
+│   │   └── ...
+│   ├── <span class="folder">service/</span>
+│   │   ├── <span class="file">CategoryService_UT.md</span>          <span class="desc">（カテゴリService テスト仕様）</span>
+│   │   ├── <span class="file">ReviewService_UT.md</span>            <span class="desc">（レビューService テスト仕様）</span>
+│   │   └── ...
+│   └── <span class="folder">util/</span>
+│       └── <span class="file">MessageUtil_UT.md</span>              <span class="desc">（メッセージUtil テスト仕様）</span>
+└── <span class="folder">テスト結果/</span>              <span class="desc">… テスト実行結果</span>
+    ├── <span class="file">BookController_Report.md</span>           <span class="desc">（書籍Controller テスト結果）</span>
+    ├── <span class="file">BookService_Report.md</span>              <span class="desc">（書籍Service テスト結果）</span>
+    ├── <span class="file">ReviewController_Report.md</span>         <span class="desc">（レビューController テスト結果）</span>
+    ├── ...
+    └── <span class="folder">jacoco/</span>              <span class="desc">… カバレッジレポート（JaCoCo）</span></div>
+
+    <div class="page-break"></div>
+
+    <!-- ============================================================
+         4. コーディング作業
+         ============================================================ -->
+    <h2 id="sec-4">4. コーディング作業</h2>
+    <div class="time-badge">&#x1F552; 10:30 – 12:30</div>
+
+    <div class="step-card" data-step="STEP 1">
+      <h4>&#x1F4E5; 実行準備 — 資材関連性の理解</h4>
+      <div class="diagram" style="margin:12px 0 4px;">
+        <div class="diagram-title">&#x25BC; コーディング作業フロー</div>
+        <div class="diagram-flow">
+          <!-- Input グループ -->
+          <div class="dia-group">
+            <div class="dia-group-label">&#x1F4E5; Input</div>
+            <div class="dia-node dia-input">
+              <span class="dia-icon">&#x1F4C4;</span>
+              <span class="dia-label">docs/外部設計</span>
+              <span class="dia-sub">設計書（md）</span>
+            </div>
+            <div class="dia-arrow">
+              <span class="arrow-line" style="color:#6b7280;">+</span>
+            </div>
+            <div class="dia-node dia-input">
+              <span class="dia-icon">&#x1F4DD;</span>
+              <span class="dia-label">CDプロンプト</span>
+              <span class="dia-sub">AIに投げる指示書</span>
+            </div>
+          </div>
+          <div class="dia-arrow">
+            <span class="arrow-line">&#x2500;&#x2500;&#x2500;&#x25B6;</span>
+            <span class="arrow-text">実行</span>
+          </div>
+          <!-- Process -->
+          <div class="dia-group">
+            <div class="dia-group-label">&#x2699;&#xFE0F; Process</div>
+            <div class="dia-node dia-ext">
+              <span class="dia-icon">&#x1F916;</span>
+              <span class="dia-label">Cline</span>
+              <span class="dia-sub">AIエージェント</span>
+            </div>
+            <div class="dia-arrow">
+              <span class="arrow-line">&#x2500;&#x25B6;</span>
+              <span class="arrow-text">API</span>
+            </div>
+            <div class="dia-node dia-ai">
+              <span class="dia-icon">&#x1F9E0;</span>
+              <span class="dia-label">Bedrock</span>
+              <span class="dia-sub">Claude 4.5</span>
+            </div>
+          </div>
+          <div class="dia-arrow">
+            <span class="arrow-line">&#x2500;&#x2500;&#x2500;&#x25B6;</span>
+            <span class="arrow-text">生成</span>
+          </div>
+          <!-- Output -->
+          <div class="dia-node dia-output">
+            <span class="dia-icon">&#x1F4E6;</span>
+            <span class="dia-label">src配下</span>
+            <span class="dia-sub">コーディング成果物</span>
+            <div class="dia-inner">
+              <span class="dia-chip">Controller</span>
+              <span class="dia-chip">Service</span>
+              <span class="dia-chip">Mapper</span>
+              <span class="dia-chip">HTML</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card" data-step="STEP 2">
+      <h4>&#x1F4D6; コーディングプロンプトの説明</h4>
+      <ul>
+        <li><strong>CD_Executor.md</strong> を説明する</li>
+        <li><strong>CD_ルール.md</strong> を説明する</li>
+      </ul>
+    </div>
+
+    <div class="step-card" data-step="STEP 3">
+      <h4>&#x1F528; コーディング作業</h4>
+      <p>CD_Executor.md を添付し「<strong>添付に従いコーディング作業を行ってください</strong>」だけ入力して実行。</p>
+      <div class="callout callout-info">
+        <span class="callout-icon">&#x23F1;&#xFE0F;</span>
+        <span>所要時間：<strong>5〜10分程度</strong>。待ち時間にエージェントの仕組みについて解説。</span>
+      </div>
+      <ul>
+        <li>AIはステートを持たない（なぜチャットは成立するのか?）</li>
+        <li>エージェントはなぜ自律型で動けるのか? チャットとの違い</li>
+      </ul>
+    </div>
+
+    <div class="step-card" data-step="STEP 4">
+      <h4>&#x1F50D; 資材確認</h4>
+      <p><strong>コーディングアウトプット資材の確認：</strong></p>
+      <ul>
+        <li>src配下に格納されていること</li>
+        <li>controller, service, mapper, entity, form のコードを確認する
+          <ul>
+            <li>確認の仕方：設計書を見つつ <strong style="color:#1e40af;">Controller &#x2192; Service &#x2192; Mapper &#x2192; Entity &#x2192; HTML</strong> の順で追う</li>
+          </ul>
+        </li>
+      </ul>
+      <p><strong>動作確認：</strong></p>
+      <ul>
+        <li>画面遷移図に従ってブラウザで画面を確認</li>
+        <li>H2 Console でDBの中身を確認</li>
+      </ul>
+    </div>
+
+    <div class="step-card" data-step="STEP 5">
+      <h4>&#x1F4AC; プロンプトの説明</h4>
+      <p>コーディング待ち時間が長い場合はこちらで説明を行う。</p>
+      <ul>
+        <li>今回は簡易版のプロンプト。プロジェクト固有の処理は多い</li>
+        <li>プロンプトはどうあるべきか? などの議論もここで実施</li>
+      </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- ============================================================
+         5. 単体テスト作業
+         ============================================================ -->
+    <h2 id="sec-5">5. 単体テスト作業</h2>
+    <div class="time-badge">&#x1F552; 13:30 – 14:30</div>
+
+    <div class="step-card" data-step="STEP 1">
+      <h4>&#x1F4CB; 単体テストの流れ説明</h4>
+      <div class="diagram" style="margin:12px 0 16px;">
+        <div class="diagram-title">&#x25BC; 単体テスト作業フロー</div>
+        <div class="diagram-flow">
+          <!-- Input グループ -->
+          <div class="dia-group">
+            <div class="dia-group-label">&#x1F4E5; Input</div>
+            <div class="dia-node dia-input">
+              <span class="dia-icon">&#x1F4C4;</span>
+              <span class="dia-label">設計書</span>
+              <span class="dia-sub">基本設計 + 詳細設計</span>
+            </div>
+            <div class="dia-arrow">
+              <span class="arrow-line" style="color:#6b7280;">+</span>
+            </div>
+            <div class="dia-node dia-input">
+              <span class="dia-icon">&#x1F4BB;</span>
+              <span class="dia-label">src配下</span>
+              <span class="dia-sub">実装済みコード</span>
+            </div>
+          </div>
+          <div class="dia-arrow">
+            <span class="arrow-line">&#x2500;&#x2500;&#x2500;&#x25B6;</span>
+            <span class="arrow-text">実行</span>
+          </div>
+          <!-- Process -->
+          <div class="dia-group">
+            <div class="dia-group-label">&#x2699;&#xFE0F; Process</div>
+            <div class="dia-node dia-ext">
+              <span class="dia-icon">&#x1F916;</span>
+              <span class="dia-label">Cline</span>
+              <span class="dia-sub">UTプロンプト</span>
+            </div>
+            <div class="dia-arrow">
+              <span class="arrow-line">&#x2500;&#x25B6;</span>
+              <span class="arrow-text">API</span>
+            </div>
+            <div class="dia-node dia-ai">
+              <span class="dia-icon">&#x1F9E0;</span>
+              <span class="dia-label">Bedrock</span>
+              <span class="dia-sub">Claude 4.5</span>
+            </div>
+          </div>
+          <div class="dia-arrow">
+            <span class="arrow-line">&#x2500;&#x2500;&#x2500;&#x25B6;</span>
+            <span class="arrow-text">生成</span>
+          </div>
+          <!-- Output -->
+          <div class="dia-node dia-output">
+            <span class="dia-icon">&#x1F4E6;</span>
+            <span class="dia-label">テスト成果物</span>
+            <div class="dia-inner">
+              <span class="dia-chip">&#x1F4DD; テスト仕様書</span>
+              <span class="dia-chip">&#x1F9EA; JUnitコード</span>
+              <span class="dia-chip">&#x1F4CA; レポート</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p><strong>Output一覧：</strong></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>成果物</th>
+              <th>格納先</th>
+              <th>内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>テスト仕様書</td>
+              <td><code>docs/単体テスト/仕様書</code></td>
+              <td>テストケース定義</td>
+            </tr>
+            <tr>
+              <td>テストコード</td>
+              <td><code>src/test</code></td>
+              <td>JUnitテストクラス</td>
+            </tr>
+            <tr>
+              <td>テスト結果レポート</td>
+              <td><code>docs/単体テスト/テスト結果</code></td>
+              <td>テスト結果 &amp; カバレッジレポート</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-tip">
+        <span class="callout-icon">&#x1F4A1;</span>
+        <span>outputについては1つずつ開いてざっくり説明するのが良い。仕様書・テストコード・テスト結果レポートのそれぞれの場所と内容を共有。</span>
+      </div>
+    </div>
+
+    <div class="step-card" data-step="STEP 2">
+      <h4>&#x1F4D6; 単体テストプロンプトの説明</h4>
+      <p><strong>単体テスト_Executor.md</strong> を説明する。</p>
+    </div>
+
+    <div class="step-card" data-step="STEP 3">
+      <h4>&#x1F528; 単体テストの実行</h4>
+      <p>単体テスト_Executor.md を添付し「<strong>添付に従い単体テスト作業を行ってください</strong>」だけ入力して実行。</p>
+    </div>
+
+    <div class="step-card" data-step="STEP 4">
+      <h4>&#x1F50D; 単体テストの結果確認</h4>
+      <ul>
+        <li><code>docs/単体テスト/仕様書</code> — テスト仕様書</li>
+        <li><code>src/test</code> — JUnitテストクラス</li>
+        <li><code>docs/単体テスト/テスト結果</code> — テスト結果レポート &amp; カバレッジレポート</li>
+      </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- ============================================================
+         6. 機能追加・改善
+         ============================================================ -->
+    <h2 id="sec-6">6. 機能追加・改善</h2>
+
+    <blockquote>
+      <p>差分検証がしやすくするため、作業に入る前に一旦ここで <strong>Git Commit</strong> してください</p>
+    </blockquote>
+
+    <h3 id="sec-6-1">6-1. 作業手順</h3>
+    <div class="diagram">
+      <div class="diagram-title">&#x25BC; 機能追加サイクル</div>
+      <div class="diagram-flow">
+        <div class="dia-node dia-step">
+          <span class="dia-icon">&#x1F4D0;</span>
+          <span class="dia-label">設計</span>
+          <span class="dia-sub">合否判断</span>
+        </div>
+        <div class="dia-arrow">
+          <span class="arrow-line">&#x2500;&#x2500;&#x25B6;</span>
+        </div>
+        <div class="dia-node dia-process">
+          <span class="dia-icon">&#x1F528;</span>
+          <span class="dia-label">コード生成</span>
+          <span class="dia-sub">CD</span>
+        </div>
+        <div class="dia-arrow">
+          <span class="arrow-line">&#x2500;&#x2500;&#x25B6;</span>
+        </div>
+        <div class="dia-node dia-ext">
+          <span class="dia-icon">&#x1F9EA;</span>
+          <span class="dia-label">テスト</span>
+          <span class="dia-sub">UT</span>
+        </div>
+        <div class="dia-arrow">
+          <span class="arrow-line">&#x2500;&#x2500;&#x25B6;</span>
+        </div>
+        <div class="dia-node dia-output">
+          <span class="dia-icon">&#x2705;</span>
+          <span class="dia-label">結果確認</span>
+          <span class="dia-sub">動作検証</span>
+        </div>
+        <div class="dia-loop">&#x1F501;</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <h3 id="sec-6-2">6-2. テーマ一覧</h3>
+
+    <!-- テーマ1 例題 -->
+    <div class="theme-card example">
+      <div class="theme-header">
+        <span class="badge badge-green">例題</span>
+        <h4>テーマ1：リコメンド（お勧め）フラグの機能追加</h4>
+      </div>
+      <p><strong>要件：</strong></p>
+      <ul>
+        <li>画面に書籍の「お勧めフラグ」を追加する</li>
+        <li>入力や編集時に指定することができるようにする</li>
+        <li>お勧めフラグがONの書籍は、書籍一覧画面でタイトルの横に<strong style="color:#059669;">「おすすめ」</strong>と表示される</li>
+      </ul>
+    </div>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">&#x1F449;</span>
+      <span><strong>ここから下を各参加者に任せるセクションです。</strong> 要件に対し影響調査 &#x2192; 設計書修正 &#x2192; CD/UT &#x2192; 動作確認の手順で進めます。</span>
+    </div>
+
+    <h4>&#x1F4DD; 各テーマ共通の進め方</h4>
+    <ol>
+      <li><strong>影響調査</strong> — docs/外部設計 より修正を要する設計書を列挙し内容を提示。HTML修正・img作成を含む <span class="badge badge-yellow">合否判定</span></li>
+      <li><strong>設計書修正</strong> — 内容が妥当であれば修正を実施 <span class="badge badge-yellow">合否判定</span></li>
+      <li><strong>コーディング・テスト</strong> — CD_Executor.md / 単体テスト_Executor.md に従い実行。差分レポートを作成 <span class="badge badge-yellow">合否判定</span></li>
+      <li><strong>動作確認</strong> — 手動で画面操作を行い検証</li>
+    </ol>
+
+    <hr class="section-divider">
+
+    <!-- テーマ2 -->
+    <div class="theme-card">
+      <div class="theme-header">
+        <h4>テーマ2：カテゴリーメンテナンス機能の追加</h4>
+        <span class="difficulty difficulty-3">&#x2B50;&#x2B50;&#x2B50; 難易度：3</span>
+      </div>
+      <p><strong>要件：</strong></p>
+      <ul>
+        <li>現状DBに固定設定されている「カテゴリー」のメンテナンス機能を追加</li>
+        <li>遷移元は一覧画面からの「カテゴリー管理」ボタン</li>
+        <li>カテゴリー管理画面では新規登録・編集・削除が可能</li>
+        <li>編集で修正できるのはカテゴリー名のみ</li>
+        <li>既に書籍データがある場合は削除不可</li>
+      </ul>
+    </div>
+
+    <!-- テーマ3 -->
+    <div class="theme-card">
+      <div class="theme-header">
+        <h4>テーマ3：出版社による検索機能の追加</h4>
+        <span class="difficulty difficulty-2">&#x2B50;&#x2B50; 難易度：2</span>
+      </div>
+      <p><strong>要件：</strong></p>
+      <ul>
+        <li>書籍の検索機能に「出版社による検索」を追加</li>
+        <li>出版社はプルダウンで選択可能にする</li>
+        <li>出版社はDBマスター管理ではなく、既存の書籍データより重複排除してプルダウンに表示</li>
+      </ul>
+    </div>
+
+    <!-- テーマ4 -->
+    <div class="theme-card">
+      <div class="theme-header">
+        <h4>テーマ4：マルチユーザー対応</h4>
+        <span class="difficulty difficulty-4">&#x2B50;&#x2B50;&#x2B50;&#x2B50; 難易度：4</span>
+      </div>
+      <p><strong>要件：</strong></p>
+      <ul>
+        <li>シングルユーザーから「一般ユーザー」「管理ユーザー」の2種類に拡張</li>
+        <li>一般ユーザーは閲覧のみ、管理ユーザーは登録・編集・削除が可能</li>
+        <li>社内利用限定のため認証機能は不要。メールアドレス・名前のみで管理</li>
+        <li>トップ画面を一覧画面からユーザー選択画面（新設）に変更</li>
+        <li>レビュー画面のユーザー名は選択画面で選んだユーザー名を引き継ぎ</li>
+        <li><strong style="color:#991b1b;">楽観ロックチェック</strong>を導入（ユーザー名＋更新日時で判定）</li>
+      </ul>
+    </div>
+
+    <!-- テーマ5 -->
+    <div class="theme-card">
+      <div class="theme-header">
+        <h4>テーマ5：レビューの削除機能の追加</h4>
+        <span class="difficulty difficulty-3">&#x2B50;&#x2B50;&#x2B50; 難易度：3</span>
+      </div>
+      <p><strong>要件：</strong></p>
+      <ul>
+        <li>書籍詳細画面のレビュー一覧に「削除」ボタンを追加</li>
+        <li>削除ボタン押下で確認メッセージを表示後、削除を実行</li>
+        <li>削除完了後は書籍詳細画面に戻る</li>
+        <li>自分のレビューデータのみが削除可能（制御が必要）</li>
+      </ul>
+    </div>
+
+    <!-- テーマ6 -->
+    <div class="theme-card">
+      <div class="theme-header">
+        <h4>テーマ6：書籍一覧のCSVダウンロード機能の追加</h4>
+        <span class="difficulty difficulty-2">&#x2B50;&#x2B50; 難易度：2</span>
+      </div>
+      <p><strong>要件：</strong></p>
+      <ul>
+        <li>書籍一覧画面に「CSVダウンロード」ボタンを追加</li>
+        <li>現在の検索条件・ソート順を引き継いだデータをCSV出力</li>
+        <li>出力項目：書籍ID・タイトル・著者・出版社・カテゴリ・出版日・価格・平均評価・レビュー数</li>
+        <li>ファイル名：<code>books_YYYYMMDD.csv</code></li>
+        <li>文字コード：<strong>UTF-8（BOM付き）</strong>、Excelで開けること</li>
+      </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- ============================================================
+         99. 検討事項
+         ============================================================ -->
+    <h2 id="sec-99">99. カリキュラムを進める上で検討する事</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>検討事項</th>
+            <th>分類</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>各メンバーの状況（終わりました? をどう確認するか?）</td>
+            <td><span class="badge badge-yellow">運営</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>カリキュラムStep単位で間に合ってない人用にGitから完了ブランチ（レスキューブランチ）を用意するか?</td>
+            <td><span class="badge badge-yellow">運営</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>本日の開発カリキュラムのタイプは<strong>AI仕様駆動開発</strong>であることを説明。他にはAI駆動型開発等がある</td>
+            <td><span class="badge badge-blue">説明</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>研修開始断面を綺麗にそろえる（必要ドキュメント・srcの状態など）</td>
+            <td><span class="badge badge-red">準備</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Gitのパブリックリポジトリにはsrc側だけを置き、ドキュメントはTeamsか別Privateリポジトリに配置</td>
+            <td><span class="badge badge-purple">環境</span></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>CDの時間計測を事前にしておく / AIの使用量を抑えておく</td>
+            <td><span class="badge badge-red">準備</span></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>UTの時間計測を事前にしておく / AIの使用量を抑えておく</td>
+            <td><span class="badge badge-red">準備</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- フッター -->
+  <div class="doc-footer">
+    <span>&copy; 2025 SKI Group &nbsp;|&nbsp; 社外秘</span>
+    <span>AI支援型開発研修 カリキュラム詳細 &nbsp;|&nbsp; v1.0</span>
+  </div>
+</div>
+
+<!-- フローティング目次 -->
+<nav class="toc-float" id="toc">
+  <div class="toc-title">目次</div>
+  <ul>
+    <li><a href="#sec-1">1. 研修の目的とゴールの説明</a></li>
+    <li><a href="#sec-1-1" class="toc-h3">1-1. 背景（Why?）</a></li>
+    <li><a href="#sec-1-2" class="toc-h3">1-2. 我々が守りたい立ち位置</a></li>
+    <li><a href="#sec-1-3" class="toc-h3">1-3. 本日のゴール</a></li>
+    <li><a href="#sec-2">2. 環境確認</a></li>
+    <li><a href="#sec-2-1" class="toc-h3">2-1. 全体構成</a></li>
+    <li><a href="#sec-2-2" class="toc-h3">2-2. 確認手順</a></li>
+    <li><a href="#sec-3">3. 資材説明</a></li>
+    <li><a href="#sec-3-1" class="toc-h3">3-1. システムの説明</a></li>
+    <li><a href="#sec-3-2" class="toc-h3">3-2. CDの成果物</a></li>
+    <li><a href="#sec-4">4. コーディング作業</a></li>
+    <li><a href="#sec-5">5. 単体テスト作業</a></li>
+    <li><a href="#sec-6">6. 機能追加・改善</a></li>
+    <li><a href="#sec-6-1" class="toc-h3">6-1. 作業手順</a></li>
+    <li><a href="#sec-6-2" class="toc-h3">6-2. テーマ一覧</a></li>
+    <li><a href="#sec-99">99. 検討事項</a></li>
+  </ul>
+</nav>
+
+<script>
+(function() {
+  const toc = document.getElementById('toc');
+  const links = toc.querySelectorAll('a[href^="#"]');
+  const sections = Array.from(links).map(a => ({
+    link: a,
+    target: document.querySelector(a.getAttribute('href'))
+  })).filter(s => s.target);
+
+  function update() {
+    let current = sections[0];
+    const scrollY = window.scrollY + 100;
+    for (const s of sections) {
+      if (s.target.offsetTop <= scrollY) current = s;
+    }
+    links.forEach(l => l.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  }
+
+  // smooth scroll
+  links.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', a.getAttribute('href'));
+      }
+    });
+  });
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+
+</body>
+</html>
