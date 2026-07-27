@@ -35,6 +35,7 @@ public class BookListController {
       @RequestParam(required = false) String searchTitle,
       @RequestParam(required = false) String searchAuthor,
       @RequestParam(required = false) Integer searchCategory,
+      @RequestParam(required = false) String searchPublisher,
       @RequestParam(required = false) String sortColumn,
       @RequestParam(required = false) String sortOrder,
       @RequestParam(defaultValue = "1") int page,
@@ -42,40 +43,47 @@ public class BookListController {
       Model model) {
 
     boolean hasSearchParam = StringUtils.hasText(searchTitle)
-        || StringUtils.hasText(searchAuthor) || searchCategory != null;
+        || StringUtils.hasText(searchAuthor) || searchCategory != null
+        || StringUtils.hasText(searchPublisher);
 
     String title;
     String author;
     Integer categoryId;
+    String publisher;
     if (hasSearchParam) {
       title = StringUtils.hasText(searchTitle) ? searchTitle : null;
       author = StringUtils.hasText(searchAuthor) ? searchAuthor : null;
       categoryId = searchCategory;
+      publisher = StringUtils.hasText(searchPublisher) ? searchPublisher : null;
       session.setAttribute(BookConstants.SESSION_SEARCH_TITLE, title);
       session.setAttribute(BookConstants.SESSION_SEARCH_AUTHOR, author);
       session.setAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID, categoryId);
+      session.setAttribute(BookConstants.SESSION_SEARCH_PUBLISHER, publisher);
     } else {
       title = (String) session.getAttribute(BookConstants.SESSION_SEARCH_TITLE);
       author = (String) session.getAttribute(BookConstants.SESSION_SEARCH_AUTHOR);
       categoryId = (Integer) session.getAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);
+      publisher = (String) session.getAttribute(BookConstants.SESSION_SEARCH_PUBLISHER);
     }
 
     String col = StringUtils.hasText(sortColumn) ? sortColumn : CommonConstants.DEFAULT_SORT_COLUMN;
     String order = StringUtils.hasText(sortOrder) ? sortOrder : CommonConstants.DEFAULT_SORT_ORDER;
 
     int pageSize = CommonConstants.PAGE_SIZE;
-    int totalCount = bookService.count(title, author, categoryId);
+    int totalCount = bookService.count(title, author, categoryId, publisher);
     int totalPages = Math.max((int) Math.ceil((double) totalCount / pageSize), 1);
     int currentPage = Math.min(Math.max(page, 1), totalPages);
 
-    List<Book> books = bookService.findAll(title, author, categoryId, col, order,
+    List<Book> books = bookService.findAll(title, author, categoryId, publisher, col, order,
         currentPage - 1, pageSize);
 
     model.addAttribute("books", books);
     model.addAttribute("categories", categoryService.findAll());
+    model.addAttribute("publishers", bookService.findAllPublishers());
     model.addAttribute("searchTitle", title);
     model.addAttribute("searchAuthor", author);
     model.addAttribute("searchCategory", categoryId);
+    model.addAttribute("searchPublisher", publisher);
     model.addAttribute("sortColumn", col);
     model.addAttribute("sortOrder", order);
     model.addAttribute("currentPage", currentPage);
@@ -100,6 +108,7 @@ public class BookListController {
     session.removeAttribute(BookConstants.SESSION_SEARCH_TITLE);
     session.removeAttribute(BookConstants.SESSION_SEARCH_AUTHOR);
     session.removeAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);
+    session.removeAttribute(BookConstants.SESSION_SEARCH_PUBLISHER);
     return "redirect:/book/list";
   }
 }

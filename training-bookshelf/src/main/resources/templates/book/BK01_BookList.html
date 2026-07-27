@@ -54,22 +54,30 @@
             <h5 class="mb-3"><i class="bi bi-search"></i> 検索条件</h5>
             <form th:action="@{/book/list}" method="get">
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="searchTitle" class="form-label">タイトル</label>
                         <input type="text" class="form-control" id="searchTitle" name="searchTitle" maxlength="100"
                                th:value="${searchTitle}" placeholder="タイトルで検索">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="searchAuthor" class="form-label">著者名</label>
                         <input type="text" class="form-control" id="searchAuthor" name="searchAuthor" maxlength="50"
                                th:value="${searchAuthor}" placeholder="著者名で検索">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="searchCategory" class="form-label">カテゴリ</label>
                         <select class="form-select" id="searchCategory" name="searchCategory">
                             <option value="">全て</option>
                             <option th:each="c : ${categories}" th:value="${c.categoryId}" th:text="${c.categoryName}"
                                     th:selected="${searchCategory != null and searchCategory == c.categoryId}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="searchPublisher" class="form-label">出版社</label>
+                        <select class="form-select" id="searchPublisher" name="searchPublisher">
+                            <option value="">全て</option>
+                            <option th:each="p : ${publishers}" th:value="${p}" th:text="${p}"
+                                    th:selected="${searchPublisher != null and searchPublisher == p}"></option>
                         </select>
                     </div>
                 </div>
@@ -91,19 +99,19 @@
                 <thead>
                     <tr>
                         <th scope="col" style="width: 80px;">
-                            <a th:href="@{/book/list(sortColumn='bookId', sortOrder=${sortColumn == 'bookId' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
+                            <a th:href="@{/book/list(sortColumn='bookId', sortOrder=${sortColumn == 'bookId' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, searchPublisher=${searchPublisher}, page=1)}">
                                 書籍ID <i class="bi sort-icon" th:if="${sortColumn == 'bookId'}" th:classappend="${sortOrder == 'ASC'} ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                             </a>
                         </th>
                         <th scope="col" style="width: 22%;">
-                            <a th:href="@{/book/list(sortColumn='title', sortOrder=${sortColumn == 'title' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
+                            <a th:href="@{/book/list(sortColumn='title', sortOrder=${sortColumn == 'title' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, searchPublisher=${searchPublisher}, page=1)}">
                                 タイトル <i class="bi sort-icon" th:if="${sortColumn == 'title'}" th:classappend="${sortOrder == 'ASC'} ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                             </a>
                         </th>
                         <th scope="col" style="width: 14%;">著者</th>
                         <th scope="col" style="width: 12%;">カテゴリ</th>
                         <th scope="col" style="width: 10%;">
-                            <a th:href="@{/book/list(sortColumn='publishedDate', sortOrder=${sortColumn == 'publishedDate' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
+                            <a th:href="@{/book/list(sortColumn='publishedDate', sortOrder=${sortColumn == 'publishedDate' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, searchPublisher=${searchPublisher}, page=1)}">
                                 出版日 <i class="bi sort-icon" th:if="${sortColumn == 'publishedDate'}" th:classappend="${sortOrder == 'ASC'} ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                             </a>
                         </th>
@@ -136,15 +144,15 @@
         <nav aria-label="ページネーション" th:if="${totalPages > 1}">
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:classappend="${currentPage <= 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/book/list(page=${currentPage - 1}, sortColumn=${sortColumn}, sortOrder=${sortOrder}, searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory})}">
+                    <a class="page-link" th:href="@{/book/list(page=${currentPage - 1}, sortColumn=${sortColumn}, sortOrder=${sortOrder}, searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, searchPublisher=${searchPublisher})}">
                         <i class="bi bi-chevron-double-left"></i> 前へ
                     </a>
                 </li>
                 <li class="page-item" th:each="p : ${#numbers.sequence(1, totalPages)}" th:classappend="${p == currentPage} ? 'active'">
-                    <a class="page-link" th:href="@{/book/list(page=${p}, sortColumn=${sortColumn}, sortOrder=${sortOrder}, searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory})}" th:text="${p}"></a>
+                    <a class="page-link" th:href="@{/book/list(page=${p}, sortColumn=${sortColumn}, sortOrder=${sortOrder}, searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, searchPublisher=${searchPublisher})}" th:text="${p}"></a>
                 </li>
                 <li class="page-item" th:classappend="${currentPage >= totalPages} ? 'disabled'">
-                    <a class="page-link" th:href="@{/book/list(page=${currentPage + 1}, sortColumn=${sortColumn}, sortOrder=${sortOrder}, searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory})}">
+                    <a class="page-link" th:href="@{/book/list(page=${currentPage + 1}, sortColumn=${sortColumn}, sortOrder=${sortOrder}, searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, searchPublisher=${searchPublisher})}">
                         次へ <i class="bi bi-chevron-double-right"></i>
                     </a>
                 </li>

@@ -36,29 +36,43 @@ class BookServiceTest {
   void findAll_001_正常取得_offset計算() {
     // Given: page=2, pageSize=20 -> offset=40
     List<Book> expected = List.of(createBook(1), createBook(2));
-    when(bookMapper.findAll(eq("Java"), eq("夏目"), eq(1), eq("title"), eq("ASC"), eq(20), eq(40)))
+    when(bookMapper.findAll(eq("Java"), eq("夏目"), eq(1), eq("オーム社"), eq("title"), eq("ASC"), eq(20), eq(40)))
         .thenReturn(expected);
 
     // When
-    List<Book> actual = bookService.findAll("Java", "夏目", 1, "title", "ASC", 2, 20);
+    List<Book> actual = bookService.findAll("Java", "夏目", 1, "オーム社", "title", "ASC", 2, 20);
 
     // Then
     assertThat(actual).hasSize(2);
     assertThat(actual.get(0).getBookId()).isEqualTo(1);
     assertThat(actual.get(1).getBookId()).isEqualTo(2);
-    verify(bookMapper, times(1)).findAll("Java", "夏目", 1, "title", "ASC", 20, 40);
+    verify(bookMapper, times(1)).findAll("Java", "夏目", 1, "オーム社", "title", "ASC", 20, 40);
   }
 
   @Test
   void count_002_正常取得() {
     // Given
-    when(bookMapper.count("Java", null, null)).thenReturn(5);
+    when(bookMapper.count("Java", null, null, null)).thenReturn(5);
 
     // When
-    int actual = bookService.count("Java", null, null);
+    int actual = bookService.count("Java", null, null, null);
 
     // Then
     assertThat(actual).isEqualTo(5);
+  }
+
+  @Test
+  void findAllPublishers_010_重複排除済み出版社一覧を取得() {
+    // Given
+    List<String> expected = List.of("オーム社", "岩波書店");
+    when(bookMapper.findAllPublishers()).thenReturn(expected);
+
+    // When
+    List<String> actual = bookService.findAllPublishers();
+
+    // Then
+    assertThat(actual).containsExactly("オーム社", "岩波書店");
+    verify(bookMapper, times(1)).findAllPublishers();
   }
 
   @Test

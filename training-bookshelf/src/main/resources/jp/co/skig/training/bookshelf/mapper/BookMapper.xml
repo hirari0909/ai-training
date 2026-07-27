@@ -25,6 +25,9 @@
       <if test="searchCategoryId != null">
         AND b.category_id = #{searchCategoryId}
       </if>
+      <if test="searchPublisher != null and searchPublisher != ''">
+        AND b.publisher = #{searchPublisher}
+      </if>
     </where>
     GROUP BY b.book_id, b.title, b.author, b.publisher, b.published_date,
              b.isbn, b.category_id, b.price, b.description, b.is_recommended,
@@ -70,6 +73,9 @@
       </if>
       <if test="searchCategoryId != null">
         AND b.category_id = #{searchCategoryId}
+      </if>
+      <if test="searchPublisher != null and searchPublisher != ''">
+        AND b.publisher = #{searchPublisher}
       </if>
     </where>
   </select>

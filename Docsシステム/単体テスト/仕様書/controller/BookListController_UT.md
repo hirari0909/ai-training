@@ -29,10 +29,12 @@
 | BK01-008 | page指定が上限超過は最終ページに補正 | 総件数20件（1ページ） | page=99 | ページ補正 | currentPage=1（totalPages） |
 | BK01-009 | 該当書籍0件で未登録メッセージ表示 | totalCount=0 | パラメータなし | noDataMessage表示 | model.noDataMessage が設定される |
 | BK01-010 | 検索条件ありで検索結果メッセージ表示 | totalCount=5、検索条件あり | searchAuthor="夏目" | searchResultMessage表示 | model.searchResultMessage に件数含む |
+| BK01-012 | カテゴリのみ指定で検索条件ありと判定 | 書籍2件、カテゴリのみ指定 | searchCategory=1 | hasSearchParam=true | model.searchResultMessage が設定される |
+| BK01-013 | 出版社のみ指定で検索条件ありと判定 | 書籍4件、出版社のみ指定 | searchPublisher="オーム社" | hasSearchParam=true | model.searchPublisher・searchResultMessage が設定される |
 
 ## 検索条件クリア - clearSearch()
 **設計書参照: BK01 3.3**
 
 | No | テストケース | 前提条件 | 入力 | 期待結果 | 確認項目 |
 |----|------------|---------|------|---------|---------|
-| BK01-011 | クリア押下でセッション削除しリダイレクト | セッションに検索条件あり | `/book/list/clear` | リダイレクト | redirect:/book/list、セッション属性3件削除 |
+| BK01-011 | クリア押下でセッション削除しリダイレクト | セッションに検索条件あり | `/book/list/clear` | リダイレクト | redirect:/book/list、セッション属性4件削除（出版社含む） |

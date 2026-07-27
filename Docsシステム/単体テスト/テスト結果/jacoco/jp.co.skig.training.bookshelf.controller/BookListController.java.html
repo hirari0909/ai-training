@@ -35,61 +35,69 @@ public class BookListController {
       @RequestParam(required = false) String searchTitle,
       @RequestParam(required = false) String searchAuthor,
       @RequestParam(required = false) Integer searchCategory,
+      @RequestParam(required = false) String searchPublisher,
       @RequestParam(required = false) String sortColumn,
       @RequestParam(required = false) String sortOrder,
       @RequestParam(defaultValue = &quot;1&quot;) int page,
       HttpSession session,
       Model model) {
 
-<span class="fc bfc" id="L44" title="All 2 branches covered.">    boolean hasSearchParam = StringUtils.hasText(searchTitle)</span>
-<span class="fc bfc" id="L45" title="All 4 branches covered.">        || StringUtils.hasText(searchAuthor) || searchCategory != null;</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">    boolean hasSearchParam = StringUtils.hasText(searchTitle)</span>
+<span class="fc bfc" id="L46" title="All 4 branches covered.">        || StringUtils.hasText(searchAuthor) || searchCategory != null</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        || StringUtils.hasText(searchPublisher);</span>
 
     String title;
     String author;
     Integer categoryId;
-<span class="fc bfc" id="L50" title="All 2 branches covered.">    if (hasSearchParam) {</span>
-<span class="fc bfc" id="L51" title="All 2 branches covered.">      title = StringUtils.hasText(searchTitle) ? searchTitle : null;</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">      author = StringUtils.hasText(searchAuthor) ? searchAuthor : null;</span>
-<span class="fc" id="L53">      categoryId = searchCategory;</span>
-<span class="fc" id="L54">      session.setAttribute(BookConstants.SESSION_SEARCH_TITLE, title);</span>
-<span class="fc" id="L55">      session.setAttribute(BookConstants.SESSION_SEARCH_AUTHOR, author);</span>
-<span class="fc" id="L56">      session.setAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID, categoryId);</span>
-<span class="fc" id="L57">    } else {</span>
-<span class="fc" id="L58">      title = (String) session.getAttribute(BookConstants.SESSION_SEARCH_TITLE);</span>
-<span class="fc" id="L59">      author = (String) session.getAttribute(BookConstants.SESSION_SEARCH_AUTHOR);</span>
-<span class="fc" id="L60">      categoryId = (Integer) session.getAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);</span>
+    String publisher;
+<span class="fc bfc" id="L53" title="All 2 branches covered.">    if (hasSearchParam) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">      title = StringUtils.hasText(searchTitle) ? searchTitle : null;</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">      author = StringUtils.hasText(searchAuthor) ? searchAuthor : null;</span>
+<span class="fc" id="L56">      categoryId = searchCategory;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">      publisher = StringUtils.hasText(searchPublisher) ? searchPublisher : null;</span>
+<span class="fc" id="L58">      session.setAttribute(BookConstants.SESSION_SEARCH_TITLE, title);</span>
+<span class="fc" id="L59">      session.setAttribute(BookConstants.SESSION_SEARCH_AUTHOR, author);</span>
+<span class="fc" id="L60">      session.setAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID, categoryId);</span>
+<span class="fc" id="L61">      session.setAttribute(BookConstants.SESSION_SEARCH_PUBLISHER, publisher);</span>
+<span class="fc" id="L62">    } else {</span>
+<span class="fc" id="L63">      title = (String) session.getAttribute(BookConstants.SESSION_SEARCH_TITLE);</span>
+<span class="fc" id="L64">      author = (String) session.getAttribute(BookConstants.SESSION_SEARCH_AUTHOR);</span>
+<span class="fc" id="L65">      categoryId = (Integer) session.getAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);</span>
+<span class="fc" id="L66">      publisher = (String) session.getAttribute(BookConstants.SESSION_SEARCH_PUBLISHER);</span>
     }
 
-<span class="fc bfc" id="L63" title="All 2 branches covered.">    String col = StringUtils.hasText(sortColumn) ? sortColumn : CommonConstants.DEFAULT_SORT_COLUMN;</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">    String order = StringUtils.hasText(sortOrder) ? sortOrder : CommonConstants.DEFAULT_SORT_ORDER;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">    String col = StringUtils.hasText(sortColumn) ? sortColumn : CommonConstants.DEFAULT_SORT_COLUMN;</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">    String order = StringUtils.hasText(sortOrder) ? sortOrder : CommonConstants.DEFAULT_SORT_ORDER;</span>
 
-<span class="fc" id="L66">    int pageSize = CommonConstants.PAGE_SIZE;</span>
-<span class="fc" id="L67">    int totalCount = bookService.count(title, author, categoryId);</span>
-<span class="fc" id="L68">    int totalPages = Math.max((int) Math.ceil((double) totalCount / pageSize), 1);</span>
-<span class="fc" id="L69">    int currentPage = Math.min(Math.max(page, 1), totalPages);</span>
+<span class="fc" id="L72">    int pageSize = CommonConstants.PAGE_SIZE;</span>
+<span class="fc" id="L73">    int totalCount = bookService.count(title, author, categoryId, publisher);</span>
+<span class="fc" id="L74">    int totalPages = Math.max((int) Math.ceil((double) totalCount / pageSize), 1);</span>
+<span class="fc" id="L75">    int currentPage = Math.min(Math.max(page, 1), totalPages);</span>
 
-<span class="fc" id="L71">    List&lt;Book&gt; books = bookService.findAll(title, author, categoryId, col, order,</span>
-<span class="fc" id="L72">        currentPage - 1, pageSize);</span>
+<span class="fc" id="L77">    List&lt;Book&gt; books = bookService.findAll(title, author, categoryId, publisher, col, order,</span>
+<span class="fc" id="L78">        currentPage - 1, pageSize);</span>
 
-<span class="fc" id="L74">    model.addAttribute(&quot;books&quot;, books);</span>
-<span class="fc" id="L75">    model.addAttribute(&quot;categories&quot;, categoryService.findAll());</span>
-<span class="fc" id="L76">    model.addAttribute(&quot;searchTitle&quot;, title);</span>
-<span class="fc" id="L77">    model.addAttribute(&quot;searchAuthor&quot;, author);</span>
-<span class="fc" id="L78">    model.addAttribute(&quot;searchCategory&quot;, categoryId);</span>
-<span class="fc" id="L79">    model.addAttribute(&quot;sortColumn&quot;, col);</span>
-<span class="fc" id="L80">    model.addAttribute(&quot;sortOrder&quot;, order);</span>
-<span class="fc" id="L81">    model.addAttribute(&quot;currentPage&quot;, currentPage);</span>
-<span class="fc" id="L82">    model.addAttribute(&quot;totalPages&quot;, totalPages);</span>
-<span class="fc" id="L83">    model.addAttribute(&quot;totalCount&quot;, totalCount);</span>
+<span class="fc" id="L80">    model.addAttribute(&quot;books&quot;, books);</span>
+<span class="fc" id="L81">    model.addAttribute(&quot;categories&quot;, categoryService.findAll());</span>
+<span class="fc" id="L82">    model.addAttribute(&quot;publishers&quot;, bookService.findAllPublishers());</span>
+<span class="fc" id="L83">    model.addAttribute(&quot;searchTitle&quot;, title);</span>
+<span class="fc" id="L84">    model.addAttribute(&quot;searchAuthor&quot;, author);</span>
+<span class="fc" id="L85">    model.addAttribute(&quot;searchCategory&quot;, categoryId);</span>
+<span class="fc" id="L86">    model.addAttribute(&quot;searchPublisher&quot;, publisher);</span>
+<span class="fc" id="L87">    model.addAttribute(&quot;sortColumn&quot;, col);</span>
+<span class="fc" id="L88">    model.addAttribute(&quot;sortOrder&quot;, order);</span>
+<span class="fc" id="L89">    model.addAttribute(&quot;currentPage&quot;, currentPage);</span>
+<span class="fc" id="L90">    model.addAttribute(&quot;totalPages&quot;, totalPages);</span>
+<span class="fc" id="L91">    model.addAttribute(&quot;totalCount&quot;, totalCount);</span>
 
-<span class="fc bfc" id="L85" title="All 2 branches covered.">    if (totalCount == 0) {</span>
-<span class="fc" id="L86">      model.addAttribute(&quot;noDataMessage&quot;, MessageUtil.getMessage(&quot;bk01.message.nodata&quot;));</span>
-<span class="fc bfc" id="L87" title="All 2 branches covered.">    } else if (hasSearchParam) {</span>
-<span class="fc" id="L88">      model.addAttribute(&quot;searchResultMessage&quot;,</span>
-<span class="fc" id="L89">          MessageUtil.getMessage(&quot;bk01.message.searchresult&quot;, totalCount));</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">    if (totalCount == 0) {</span>
+<span class="fc" id="L94">      model.addAttribute(&quot;noDataMessage&quot;, MessageUtil.getMessage(&quot;bk01.message.nodata&quot;));</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">    } else if (hasSearchParam) {</span>
+<span class="fc" id="L96">      model.addAttribute(&quot;searchResultMessage&quot;,</span>
+<span class="fc" id="L97">          MessageUtil.getMessage(&quot;bk01.message.searchresult&quot;, totalCount));</span>
     }
 
-<span class="fc" id="L92">    return &quot;book/BK01_BookList&quot;;</span>
+<span class="fc" id="L100">    return &quot;book/BK01_BookList&quot;;</span>
   }
 
   /**
@@ -97,10 +105,11 @@ public class BookListController {
    */
   @GetMapping(&quot;/book/list/clear&quot;)
   public String clearSearch(HttpSession session) {
-<span class="fc" id="L100">    session.removeAttribute(BookConstants.SESSION_SEARCH_TITLE);</span>
-<span class="fc" id="L101">    session.removeAttribute(BookConstants.SESSION_SEARCH_AUTHOR);</span>
-<span class="fc" id="L102">    session.removeAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);</span>
-<span class="fc" id="L103">    return &quot;redirect:/book/list&quot;;</span>
+<span class="fc" id="L108">    session.removeAttribute(BookConstants.SESSION_SEARCH_TITLE);</span>
+<span class="fc" id="L109">    session.removeAttribute(BookConstants.SESSION_SEARCH_AUTHOR);</span>
+<span class="fc" id="L110">    session.removeAttribute(BookConstants.SESSION_SEARCH_CATEGORY_ID);</span>
+<span class="fc" id="L111">    session.removeAttribute(BookConstants.SESSION_SEARCH_PUBLISHER);</span>
+<span class="fc" id="L112">    return &quot;redirect:/book/list&quot;;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -200,15 +200,15 @@
             <h5 class="mb-3"><i class="bi bi-search"></i> 検索条件</h5>
             <form>
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="searchTitle" class="form-label">タイトル</label>
                         <input type="text" class="form-control" id="searchTitle" name="searchTitle" maxlength="100" placeholder="タイトルで検索">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="searchAuthor" class="form-label">著者名</label>
                         <input type="text" class="form-control" id="searchAuthor" name="searchAuthor" maxlength="50" placeholder="著者名で検索">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="searchCategory" class="form-label">カテゴリ</label>
                         <select class="form-select" id="searchCategory" name="searchCategory">
                             <option value="" selected>全て</option>
@@ -221,6 +221,18 @@
                             <option value="cooking">料理・グルメ</option>
                             <option value="hobby">趣味・実用</option>
                             <option value="other">その他</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="searchPublisher" class="form-label">出版社</label>
+                        <select class="form-select" id="searchPublisher" name="searchPublisher">
+                            <option value="" selected>全て</option>
+                            <option value="オライリージャパン">オライリージャパン</option>
+                            <option value="オーム社">オーム社</option>
+                            <option value="岩波書店">岩波書店</option>
+                            <option value="新潮社">新潮社</option>
+                            <option value="ダイヤモンド社">ダイヤモンド社</option>
+                            <option value="秀和システム">秀和システム</option>
                         </select>
                     </div>
                 </div>

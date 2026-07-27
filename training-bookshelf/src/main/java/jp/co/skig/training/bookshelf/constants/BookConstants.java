@@ -17,6 +17,9 @@ public final class BookConstants {
   /** セッションキー: 検索条件（カテゴリID） */
   public static final String SESSION_SEARCH_CATEGORY_ID = "bookSearchCategoryId";
 
+  /** セッションキー: 検索条件（出版社） */
+  public static final String SESSION_SEARCH_PUBLISHER = "bookSearchPublisher";
+
   /** セッションキー: 登録入力値 */
   public static final String SESSION_REGISTER_FORM = "bookRegisterForm";
 
