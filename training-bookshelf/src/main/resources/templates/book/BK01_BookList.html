@@ -92,39 +92,23 @@
                     <tr>
                         <th scope="col" style="width: 80px;">
                             <a th:href="@{/book/list(sortColumn='bookId', sortOrder=${sortColumn == 'bookId' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
-                                書籍ID <i class="bi bi-arrow-down-up sort-icon"></i>
+                                書籍ID <i class="bi sort-icon" th:if="${sortColumn == 'bookId'}" th:classappend="${sortOrder == 'ASC'} ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                             </a>
                         </th>
                         <th scope="col" style="width: 22%;">
                             <a th:href="@{/book/list(sortColumn='title', sortOrder=${sortColumn == 'title' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
-                                タイトル <i class="bi bi-arrow-down-up sort-icon"></i>
+                                タイトル <i class="bi sort-icon" th:if="${sortColumn == 'title'}" th:classappend="${sortOrder == 'ASC'} ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                             </a>
                         </th>
-                        <th scope="col" style="width: 14%;">
-                            <a th:href="@{/book/list(sortColumn='author', sortOrder=${sortColumn == 'author' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
-                                著者 <i class="bi bi-arrow-down-up sort-icon"></i>
-                            </a>
-                        </th>
-                        <th scope="col" style="width: 12%;">
-                            <a th:href="@{/book/list(sortColumn='categoryName', sortOrder=${sortColumn == 'categoryName' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
-                                カテゴリ <i class="bi bi-arrow-down-up sort-icon"></i>
-                            </a>
-                        </th>
+                        <th scope="col" style="width: 14%;">著者</th>
+                        <th scope="col" style="width: 12%;">カテゴリ</th>
                         <th scope="col" style="width: 10%;">
                             <a th:href="@{/book/list(sortColumn='publishedDate', sortOrder=${sortColumn == 'publishedDate' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
-                                出版日 <i class="bi bi-arrow-down-up sort-icon"></i>
+                                出版日 <i class="bi sort-icon" th:if="${sortColumn == 'publishedDate'}" th:classappend="${sortOrder == 'ASC'} ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"></i>
                             </a>
                         </th>
-                        <th scope="col" style="width: 9%;" class="text-center">
-                            <a th:href="@{/book/list(sortColumn='avgRating', sortOrder=${sortColumn == 'avgRating' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
-                                評価 <i class="bi bi-arrow-down-up sort-icon"></i>
-                            </a>
-                        </th>
-                        <th scope="col" style="width: 8%;" class="text-center">
-                            <a th:href="@{/book/list(sortColumn='reviewCount', sortOrder=${sortColumn == 'reviewCount' and sortOrder == 'ASC'} ? 'DESC' : 'ASC', searchTitle=${searchTitle}, searchAuthor=${searchAuthor}, searchCategory=${searchCategory}, page=1)}">
-                                レビュー数 <i class="bi bi-arrow-down-up sort-icon"></i>
-                            </a>
-                        </th>
+                        <th scope="col" style="width: 9%;" class="text-center">評価</th>
+                        <th scope="col" style="width: 8%;" class="text-center">レビュー数</th>
                         <th scope="col" style="width: 12%;" class="text-center">操作</th>
                     </tr>
                 </thead>

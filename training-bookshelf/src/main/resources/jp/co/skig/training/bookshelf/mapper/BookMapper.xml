@@ -30,6 +30,9 @@
              b.isbn, b.category_id, b.price, b.description,
              b.created_at, b.updated_at, c.category_name
     <choose>
+      <when test="sortColumn == 'bookId'">
+        ORDER BY b.book_id ${sortOrder}
+      </when>
       <when test="sortColumn == 'title'">
         ORDER BY b.title ${sortOrder}
       </when>
